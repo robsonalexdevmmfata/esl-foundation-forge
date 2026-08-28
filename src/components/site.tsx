@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import logoPng from "@/assets/logo.png";
+import { getConfig } from "@/lib/site-config";
 
 export const WHATSAPP =
   "https://wa.me/5511999999999?text=" +
@@ -7,22 +8,26 @@ export const WHATSAPP =
     "Olá, ESL FACILITY! Gostaria de solicitar um orçamento para o meu projeto.",
   );
 
-const links = [
-  { href: "#inicio", label: "Início" },
-  { href: "#sobre", label: "Sobre Nós" },
-  { href: "#servicos", label: "Serviços" },
-  { href: "#projetos", label: "Projetos" },
-  { href: "#contato", label: "Contato" },
-];
-
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [config, setConfig] = useState(getConfig());
+
+  useEffect(() => {
+    const handleConfigChange = () => {
+      setConfig(getConfig());
+    };
+    window.addEventListener("siteConfigChanged", handleConfigChange);
+    return () => window.removeEventListener("siteConfigChanged", handleConfigChange);
+  }, []);
+
+  const links = config.navbar.links;
+
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-5">
         <a href="#inicio" className="flex items-center">
           <img
-            src={logoPng}
+            src={config.logo.navbar || logoPng}
             alt="ESL Facility — construção civil"
             className="h-16 w-auto md:h-20"
             width={300}
@@ -49,7 +54,7 @@ export function Header() {
             rel="noopener noreferrer"
             className="hidden rounded-md bg-terra px-3 py-2 font-display text-xs font-bold text-background shadow-sm transition-colors hover:bg-terra-dark sm:inline-flex sm:px-4 sm:py-2.5 sm:text-sm"
           >
-            Orçamento Rápido
+            {config.navbar.buttonText}
           </a>
           <button
             aria-label="Abrir menu"
@@ -81,7 +86,7 @@ export function Header() {
             rel="noopener noreferrer"
             className="mt-4 block rounded-md bg-terra px-4 py-3 text-center font-display text-sm font-bold text-background"
           >
-            Orçamento Rápido
+            {config.navbar.buttonText}
           </a>
         </nav>
       )}
@@ -90,12 +95,24 @@ export function Header() {
 }
 
 export function Footer() {
+  const [config, setConfig] = useState(getConfig());
+
+  useEffect(() => {
+    const handleConfigChange = () => {
+      setConfig(getConfig());
+    };
+    window.addEventListener("siteConfigChanged", handleConfigChange);
+    return () => window.removeEventListener("siteConfigChanged", handleConfigChange);
+  }, []);
+
+  const links = config.navbar.links;
+
   return (
     <footer className="bg-carvao text-background">
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-5 sm:py-14 md:grid-cols-3">
         <div>
           <img
-            src={logoPng}
+            src={config.logo.footer || logoPng}
             alt="ESL Facility — construção civil"
             className="h-16 w-auto sm:h-20"
           />
