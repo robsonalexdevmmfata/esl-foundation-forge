@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { AdminLayout } from "@/components/admin-layout";
 import {
   BarChart,
   Bar,
@@ -18,12 +17,8 @@ import {
   Area,
 } from "recharts";
 
-export const Route = createFileRoute("/admin/dashboard")({
-  component: () => (
-    <AdminLayout>
-      <AdminDashboard />
-    </AdminLayout>
-  ),
+export const Route = createFileRoute("/admin/_auth/dashboard")({
+  component: AdminDashboard,
 });
 
 const projectData = [

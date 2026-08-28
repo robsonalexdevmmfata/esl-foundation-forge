@@ -44,7 +44,7 @@ export function AdminLayout() {
 
         <nav className="p-4 space-y-2">
           <Link
-            to="/admin/dashboard"
+            to="/admin/_auth/dashboard"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors"
             activeProps={{ className: "bg-slate-700" }}
           >
@@ -55,7 +55,7 @@ export function AdminLayout() {
           </Link>
 
           <Link
-            to="/admin/logo-navbar"
+            to="/admin/_auth/logo-navbar"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors"
             activeProps={{ className: "bg-slate-700" }}
           >
@@ -66,7 +66,7 @@ export function AdminLayout() {
           </Link>
 
           <Link
-            to="/admin/cores-textos"
+            to="/admin/_auth/cores-textos"
             className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-700 transition-colors"
             activeProps={{ className: "bg-slate-700" }}
           >

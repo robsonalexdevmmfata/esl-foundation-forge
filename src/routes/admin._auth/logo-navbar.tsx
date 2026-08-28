@@ -1,14 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import { AdminLayout } from "@/components/admin-layout";
 import { getConfig, saveConfig, SiteConfig } from "@/lib/site-config";
 
-export const Route = createFileRoute("/admin/logo-navbar")({
-  component: () => (
-    <AdminLayout>
-      <LogoNavbarEditor />
-    </AdminLayout>
-  ),
+export const Route = createFileRoute("/admin/_auth/logo-navbar")({
+  component: LogoNavbarEditor,
 });
 
 function LogoNavbarEditor() {

@@ -9,13 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AdminAuth_rootRouteImport } from './routes/admin._auth/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminCoresTextosRouteImport } from './routes/admin.cores-textos'
-import { Route as AdminDashboardRouteImport } from './routes/admin.dashboard'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminLogoNavbarRouteImport } from './routes/admin.logo-navbar'
+import { Route as AdminAuthCoresTextosRouteImport } from './routes/admin._auth/cores-textos'
+import { Route as AdminAuthDashboardRouteImport } from './routes/admin._auth/dashboard'
+import { Route as AdminAuthLogoNavbarRouteImport } from './routes/admin._auth/logo-navbar'
 
+const AdminAuth_rootRoute = AdminAuth_rootRouteImport.update({
+  id: '/admin/_auth/__root',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -26,90 +31,102 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminCoresTextosRoute = AdminCoresTextosRouteImport.update({
-  id: '/admin/cores-textos',
-  path: '/admin/cores-textos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
-  id: '/admin/dashboard',
-  path: '/admin/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLogoNavbarRoute = AdminLogoNavbarRouteImport.update({
-  id: '/admin/logo-navbar',
+const AdminAuthCoresTextosRoute = AdminAuthCoresTextosRouteImport.update({
+  id: '/admin/_auth/cores-textos',
+  path: '/admin/cores-textos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAuthDashboardRoute = AdminAuthDashboardRouteImport.update({
+  id: '/admin/_auth/dashboard',
+  path: '/admin/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAuthLogoNavbarRoute = AdminAuthLogoNavbarRouteImport.update({
+  id: '/admin/_auth/logo-navbar',
   path: '/admin/logo-navbar',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin/cores-textos': typeof AdminCoresTextosRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/logo-navbar': typeof AdminLogoNavbarRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin': typeof AdminAuth_rootRoute
+  '/admin/cores-textos': typeof AdminAuthCoresTextosRoute
+  '/admin/dashboard': typeof AdminAuthDashboardRoute
+  '/admin/logo-navbar': typeof AdminAuthLogoNavbarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin/cores-textos': typeof AdminCoresTextosRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/logo-navbar': typeof AdminLogoNavbarRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/cores-textos': typeof AdminAuthCoresTextosRoute
+  '/admin/dashboard': typeof AdminAuthDashboardRoute
+  '/admin/logo-navbar': typeof AdminAuthLogoNavbarRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin/cores-textos': typeof AdminCoresTextosRoute
-  '/admin/dashboard': typeof AdminDashboardRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/logo-navbar': typeof AdminLogoNavbarRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/_auth/__root': typeof AdminAuth_rootRoute
+  '/admin/_auth/cores-textos': typeof AdminAuthCoresTextosRoute
+  '/admin/_auth/dashboard': typeof AdminAuthDashboardRoute
+  '/admin/_auth/logo-navbar': typeof AdminAuthLogoNavbarRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin/login'
+    | '/admin/'
+    | '/admin'
     | '/admin/cores-textos'
     | '/admin/dashboard'
-    | '/admin/login'
     | '/admin/logo-navbar'
-    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/login'
+    | '/admin'
     | '/admin/cores-textos'
     | '/admin/dashboard'
-    | '/admin/login'
     | '/admin/logo-navbar'
-    | '/admin'
   id:
     | '__root__'
     | '/'
-    | '/admin/cores-textos'
-    | '/admin/dashboard'
     | '/admin/login'
-    | '/admin/logo-navbar'
     | '/admin/'
+    | '/admin/_auth/__root'
+    | '/admin/_auth/cores-textos'
+    | '/admin/_auth/dashboard'
+    | '/admin/_auth/logo-navbar'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminCoresTextosRoute: typeof AdminCoresTextosRoute
-  AdminDashboardRoute: typeof AdminDashboardRoute
   AdminLoginRoute: typeof AdminLoginRoute
-  AdminLogoNavbarRoute: typeof AdminLogoNavbarRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminAuth_rootRoute: typeof AdminAuth_rootRoute
+  AdminAuthCoresTextosRoute: typeof AdminAuthCoresTextosRoute
+  AdminAuthDashboardRoute: typeof AdminAuthDashboardRoute
+  AdminAuthLogoNavbarRoute: typeof AdminAuthLogoNavbarRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/admin/_auth/__root': {
+      id: '/admin/_auth/__root'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminAuth_rootRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -124,20 +141,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/cores-textos': {
-      id: '/admin/cores-textos'
-      path: '/admin/cores-textos'
-      fullPath: '/admin/cores-textos'
-      preLoaderRoute: typeof AdminCoresTextosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/dashboard': {
-      id: '/admin/dashboard'
-      path: '/admin/dashboard'
-      fullPath: '/admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/login': {
       id: '/admin/login'
       path: '/admin/login'
@@ -145,11 +148,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/logo-navbar': {
-      id: '/admin/logo-navbar'
+    '/admin/_auth/cores-textos': {
+      id: '/admin/_auth/cores-textos'
+      path: '/admin/cores-textos'
+      fullPath: '/admin/cores-textos'
+      preLoaderRoute: typeof AdminAuthCoresTextosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/_auth/dashboard': {
+      id: '/admin/_auth/dashboard'
+      path: '/admin/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminAuthDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/_auth/logo-navbar': {
+      id: '/admin/_auth/logo-navbar'
       path: '/admin/logo-navbar'
       fullPath: '/admin/logo-navbar'
-      preLoaderRoute: typeof AdminLogoNavbarRouteImport
+      preLoaderRoute: typeof AdminAuthLogoNavbarRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -157,11 +174,12 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminCoresTextosRoute: AdminCoresTextosRoute,
-  AdminDashboardRoute: AdminDashboardRoute,
   AdminLoginRoute: AdminLoginRoute,
-  AdminLogoNavbarRoute: AdminLogoNavbarRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminAuth_rootRoute: AdminAuth_rootRoute,
+  AdminAuthCoresTextosRoute: AdminAuthCoresTextosRoute,
+  AdminAuthDashboardRoute: AdminAuthDashboardRoute,
+  AdminAuthLogoNavbarRoute: AdminAuthLogoNavbarRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
