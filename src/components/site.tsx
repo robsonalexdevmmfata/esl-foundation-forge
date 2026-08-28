@@ -40,7 +40,8 @@ export function Header() {
             <a
               key={l.href}
               href={l.href}
-              className="font-display text-xs font-semibold tracking-wide text-floresta transition-colors hover:text-terra sm:text-sm md:text-sm"
+              className="font-display text-xs font-semibold tracking-wide transition-colors hover:opacity-80 sm:text-sm md:text-sm"
+              style={{ color: config.colors.primary }}
             >
               {l.label}
             </a>
@@ -52,14 +53,16 @@ export function Header() {
             href={WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden rounded-md bg-terra px-3 py-2 font-display text-xs font-bold text-background shadow-sm transition-colors hover:bg-terra-dark sm:inline-flex sm:px-4 sm:py-2.5 sm:text-sm"
+            className="hidden rounded-md px-3 py-2 font-display text-xs font-bold text-background shadow-sm transition-colors hover:opacity-90 sm:inline-flex sm:px-4 sm:py-2.5 sm:text-sm"
+            style={{ backgroundColor: config.colors.primary }}
           >
             {config.navbar.buttonText}
           </a>
           <button
             aria-label="Abrir menu"
             onClick={() => setOpen((v) => !v)}
-            className="rounded-md border border-border p-2 text-floresta lg:hidden"
+            className="rounded-md border border-border p-2 lg:hidden"
+            style={{ color: config.colors.primary }}
           >
             <span className="block h-0.5 w-5 bg-current" />
             <span className="mt-1 block h-0.5 w-5 bg-current" />
@@ -75,7 +78,8 @@ export function Header() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="block py-3 font-display text-sm font-semibold text-floresta border-b border-border/50 last:border-0"
+              className="block border-b border-border/50 py-3 font-display text-sm font-semibold last:border-0"
+              style={{ color: config.colors.primary }}
             >
               {l.label}
             </a>
@@ -84,7 +88,8 @@ export function Header() {
             href={WHATSAPP}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 block rounded-md bg-terra px-4 py-3 text-center font-display text-sm font-bold text-background"
+            className="mt-4 block rounded-md px-4 py-3 text-center font-display text-sm font-bold text-background"
+            style={{ backgroundColor: config.colors.primary }}
           >
             {config.navbar.buttonText}
           </a>
@@ -108,7 +113,7 @@ export function Footer() {
   const links = config.navbar.links;
 
   return (
-    <footer className="bg-carvao text-background">
+    <footer className="bg-carvao text-background" style={{ backgroundColor: config.colors.secondary }}>
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-5 sm:py-14 md:grid-cols-3">
         <div>
           <img
@@ -117,8 +122,7 @@ export function Footer() {
             className="h-16 w-auto sm:h-20"
           />
           <p className="mt-3 max-w-xs text-sm text-background/70">
-            Engenharia, construção e manutenção predial com técnica, segurança e
-            responsabilidade ambiental.
+            {config.texts.footerDescription}
           </p>
         </div>
 
@@ -168,16 +172,11 @@ export function Footer() {
       </div>
 
       <div className="border-t border-background/15">
-        <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4 text-xs text-background/70 sm:px-5 sm:py-5 md:flex-row md:items-center md:justify-between">
-          <p>© 2024 ESL FACILITY. Todos os direitos reservados.</p>
-          <p>
-            Desenvolvido pela{" "}
-            <a
-              href="https://www.agenciainfotech.com.br"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-mostarda hover:text-terra"
-            >
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-4 text-xs text-background/70 sm:px-5 sm:py-5 md:flex-row md:items-center md:justify-between">
+          <p>{config.texts.footerCopyright}</p>
+          <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
+            <span>Desenvolvido por</span>
+            <a href="https://www.agenciainfotech.com.br" target="_blank" rel="noopener noreferrer" className="font-semibold text-mostarda hover:text-terra">
               Agência Info Tech
             </a>
           </p>

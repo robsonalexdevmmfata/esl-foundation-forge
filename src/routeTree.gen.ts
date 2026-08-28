@@ -9,18 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as AdminAuth_rootRouteImport } from './routes/admin._auth/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminClientesRouteImport } from './routes/admin.clientes'
+import { Route as AdminFinanceiroRouteImport } from './routes/admin.financeiro'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
+import { Route as AdminProjetosRouteImport } from './routes/admin.projetos'
 import { Route as AdminAuthCoresTextosRouteImport } from './routes/admin._auth/cores-textos'
 import { Route as AdminAuthDashboardRouteImport } from './routes/admin._auth/dashboard'
 import { Route as AdminAuthLogoNavbarRouteImport } from './routes/admin._auth/logo-navbar'
 
-const AdminAuth_rootRoute = AdminAuth_rootRouteImport.update({
-  id: '/admin/_auth/__root',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,9 +29,24 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminClientesRoute = AdminClientesRouteImport.update({
+  id: '/admin/clientes',
+  path: '/admin/clientes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminFinanceiroRoute = AdminFinanceiroRouteImport.update({
+  id: '/admin/financeiro',
+  path: '/admin/financeiro',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/admin/login',
   path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProjetosRoute = AdminProjetosRouteImport.update({
+  id: '/admin/projetos',
+  path: '/admin/projetos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAuthCoresTextosRoute = AdminAuthCoresTextosRouteImport.update({
@@ -54,16 +67,21 @@ const AdminAuthLogoNavbarRoute = AdminAuthLogoNavbarRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/financeiro': typeof AdminFinanceiroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/projetos': typeof AdminProjetosRoute
   '/admin/': typeof AdminIndexRoute
-  '/admin': typeof AdminAuth_rootRoute
   '/admin/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/dashboard': typeof AdminAuthDashboardRoute
   '/admin/logo-navbar': typeof AdminAuthLogoNavbarRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/financeiro': typeof AdminFinanceiroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/projetos': typeof AdminProjetosRoute
   '/admin': typeof AdminIndexRoute
   '/admin/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/dashboard': typeof AdminAuthDashboardRoute
@@ -72,9 +90,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin/clientes': typeof AdminClientesRoute
+  '/admin/financeiro': typeof AdminFinanceiroRoute
   '/admin/login': typeof AdminLoginRoute
+  '/admin/projetos': typeof AdminProjetosRoute
   '/admin/': typeof AdminIndexRoute
-  '/admin/_auth/__root': typeof AdminAuth_rootRoute
   '/admin/_auth/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/_auth/dashboard': typeof AdminAuthDashboardRoute
   '/admin/_auth/logo-navbar': typeof AdminAuthLogoNavbarRoute
@@ -83,16 +103,21 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin/clientes'
+    | '/admin/financeiro'
     | '/admin/login'
+    | '/admin/projetos'
     | '/admin/'
-    | '/admin'
     | '/admin/cores-textos'
     | '/admin/dashboard'
     | '/admin/logo-navbar'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin/clientes'
+    | '/admin/financeiro'
     | '/admin/login'
+    | '/admin/projetos'
     | '/admin'
     | '/admin/cores-textos'
     | '/admin/dashboard'
@@ -100,9 +125,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin/clientes'
+    | '/admin/financeiro'
     | '/admin/login'
+    | '/admin/projetos'
     | '/admin/'
-    | '/admin/_auth/__root'
     | '/admin/_auth/cores-textos'
     | '/admin/_auth/dashboard'
     | '/admin/_auth/logo-navbar'
@@ -110,9 +137,11 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminClientesRoute: typeof AdminClientesRoute
+  AdminFinanceiroRoute: typeof AdminFinanceiroRoute
   AdminLoginRoute: typeof AdminLoginRoute
+  AdminProjetosRoute: typeof AdminProjetosRoute
   AdminIndexRoute: typeof AdminIndexRoute
-  AdminAuth_rootRoute: typeof AdminAuth_rootRoute
   AdminAuthCoresTextosRoute: typeof AdminAuthCoresTextosRoute
   AdminAuthDashboardRoute: typeof AdminAuthDashboardRoute
   AdminAuthLogoNavbarRoute: typeof AdminAuthLogoNavbarRoute
@@ -120,13 +149,6 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/admin/_auth/__root': {
-      id: '/admin/_auth/__root'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminAuth_rootRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -141,11 +163,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/clientes': {
+      id: '/admin/clientes'
+      path: '/admin/clientes'
+      fullPath: '/admin/clientes'
+      preLoaderRoute: typeof AdminClientesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/financeiro': {
+      id: '/admin/financeiro'
+      path: '/admin/financeiro'
+      fullPath: '/admin/financeiro'
+      preLoaderRoute: typeof AdminFinanceiroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/login': {
       id: '/admin/login'
       path: '/admin/login'
       fullPath: '/admin/login'
       preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/projetos': {
+      id: '/admin/projetos'
+      path: '/admin/projetos'
+      fullPath: '/admin/projetos'
+      preLoaderRoute: typeof AdminProjetosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/_auth/cores-textos': {
@@ -174,9 +217,11 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminClientesRoute: AdminClientesRoute,
+  AdminFinanceiroRoute: AdminFinanceiroRoute,
   AdminLoginRoute: AdminLoginRoute,
+  AdminProjetosRoute: AdminProjetosRoute,
   AdminIndexRoute: AdminIndexRoute,
-  AdminAuth_rootRoute: AdminAuth_rootRoute,
   AdminAuthCoresTextosRoute: AdminAuthCoresTextosRoute,
   AdminAuthDashboardRoute: AdminAuthDashboardRoute,
   AdminAuthLogoNavbarRoute: AdminAuthLogoNavbarRoute,

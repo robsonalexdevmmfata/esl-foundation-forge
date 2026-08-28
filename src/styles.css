@@ -4,20 +4,6 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
- */
-
 @theme inline {
   --font-display: "Montserrat", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Open Sans", ui-sans-serif, system-ui, sans-serif;
@@ -72,7 +58,7 @@
 }
 
 :root {
-  --radius: 0.5rem;
+  --radius: 0.75rem;
   --terra: oklch(0.6 0.116 43.5);
   --terra-dark: oklch(0.52 0.115 42);
   --floresta: oklch(0.41 0.075 165);
@@ -80,24 +66,24 @@
   --mostarda: oklch(0.79 0.115 82);
   --mostarda-soft: oklch(0.9 0.06 85);
   --carvao: oklch(0.32 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.32 0 0);
+  --background: oklch(0.985 0.003 240);
+  --foreground: oklch(0.256 0.015 246);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.32 0 0);
+  --card-foreground: oklch(0.256 0.015 246);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.32 0 0);
+  --popover-foreground: oklch(0.256 0.015 246);
   --primary: var(--floresta);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.96 0.012 85);
+  --secondary: oklch(0.96 0.01 244);
   --secondary-foreground: var(--floresta);
-  --muted: oklch(0.96 0.008 85);
-  --muted-foreground: oklch(0.5 0.01 85);
+  --muted: oklch(0.968 0.008 244);
+  --muted-foreground: oklch(0.49 0.012 244);
   --accent: var(--terra);
   --accent-foreground: oklch(1 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.9 0.02 85);
-  --input: oklch(0.9 0.02 85);
+  --border: oklch(0.91 0.014 244);
+  --input: oklch(0.97 0.008 244);
   --ring: var(--floresta);
 
   --chart-1: oklch(0.646 0.222 41.116);
@@ -155,17 +141,25 @@
     border-color: var(--color-border);
   }
 
-  body {
-    background-color: var(--color-background);
-    color: var(--color-foreground);
+  html {
+    scroll-behavior: smooth;
   }
-}
 
-@layer base {
   body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top left, rgba(148, 163, 184, 0.18), transparent 28%),
+      linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+    color: var(--color-foreground);
     font-family: var(--font-sans);
   }
-  h1, h2, h3, h4, .font-display {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  .font-display {
     font-family: var(--font-display);
   }
 }

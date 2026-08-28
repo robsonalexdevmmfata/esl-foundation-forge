@@ -1,16 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { getConfig, saveConfig, SiteConfig } from "@/lib/site-config";
+import { AdminLayout } from "@/components/admin-layout";
 
 export const Route = createFileRoute("/admin/_auth/cores-textos")({
-  component: ColorsTextsEditor,
+  component: () => (
+    <AdminLayout>
+      <ColorsTextsEditor />
+    </AdminLayout>
+  ),
 });
 
 function ColorsTextsEditor() {
-  const [config, setConfig] = useState<SiteConfig>(getConfig());
+  const [config, setConfig] = useState<SiteConfig>(() => getConfig());
+  const [isSaved, setIsSaved] = useState(true);
 
   useEffect(() => {
-    setConfig(getConfig());
+    const initialConfig = getConfig();
+    setConfig(initialConfig);
+    setIsSaved(true);
   }, []);
 
   const handleColorChange = (colorKey: keyof SiteConfig["colors"], value: string) => {
@@ -20,6 +28,7 @@ function ColorsTextsEditor() {
     };
     setConfig(newConfig);
     saveConfig(newConfig);
+    setIsSaved(true);
   };
 
   const handleTextChange = (textKey: keyof SiteConfig["texts"], value: string) => {
@@ -29,17 +38,37 @@ function ColorsTextsEditor() {
     };
     setConfig(newConfig);
     saveConfig(newConfig);
+    setIsSaved(true);
   };
 
-  const ColorPicker = ({ label, value, onChange }: { label: string; value: string; onChange: (value: string) => void }) => (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-2">{label}</label>
+  const handleSave = () => {
+    saveConfig(config);
+    setIsSaved(true);
+  };
+
+  const ColorPicker = ({
+    label,
+    value,
+    onChange,
+    description,
+  }: {
+    label: string;
+    value: string;
+    onChange: (value: string) => void;
+    description: string;
+  }) => (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+      <div className="mb-2 flex items-center justify-between gap-3">
+        <label className="block text-sm font-semibold text-gray-700">{label}</label>
+        <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400">{value}</span>
+      </div>
+      <p className="mb-3 text-xs text-slate-500">{description}</p>
       <div className="flex gap-3">
         <input
           type="color"
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-16 h-12 rounded border border-gray-300 cursor-pointer"
+          className="w-16 h-12 rounded border border-gray-300 cursor-pointer bg-white"
         />
         <input
           type="text"
@@ -66,9 +95,19 @@ function ColorsTextsEditor() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-800">Cores e Textos</h1>
-        <p className="text-gray-600 mt-2">Personalize as cores e textos do site</p>
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-800">Cores e Textos</h1>
+          <p className="mt-2 text-gray-600">Personalize as cores e textos do site</p>
+        </div>
+
+        <button
+          type="button"
+          onClick={handleSave}
+          className="rounded-xl bg-[#1f7a4d] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#196b42]"
+        >
+          {isSaved ? "Salvo" : "Salvar alterações"}
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -78,28 +117,33 @@ function ColorsTextsEditor() {
 
           <div className="space-y-6">
             <ColorPicker
-              label="Cor Primária (Verde)"
+              label="Cor Primária"
               value={config.colors.primary}
+              description="Usada no logotipo, nav links, botões principais e fundo do hero."
               onChange={(value) => handleColorChange("primary", value)}
             />
             <ColorPicker
-              label="Cor Secundária (Marrom)"
+              label="Cor Secundária"
               value={config.colors.secondary}
+              description="Aplica no rodapé e nas áreas de destaque institucional do site."
               onChange={(value) => handleColorChange("secondary", value)}
             />
             <ColorPicker
-              label="Cor de Destaque (Amarelo)"
+              label="Cor de Destaque"
               value={config.colors.accent}
+              description="Usada em botões acessórios, destaques, badges e elementos visuais de atenção."
               onChange={(value) => handleColorChange("accent", value)}
             />
             <ColorPicker
               label="Cor de Fundo"
               value={config.colors.background}
+              description="Define o fundo geral das páginas e blocos claros."
               onChange={(value) => handleColorChange("background", value)}
             />
             <ColorPicker
               label="Cor do Texto"
               value={config.colors.text}
+              description="Ajusta a cor principal do texto do corpo da página e blocos de conteúdo."
               onChange={(value) => handleColorChange("text", value)}
             />
           </div>

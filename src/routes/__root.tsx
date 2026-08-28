@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { getConfig } from "@/lib/site-config";
 
 function NotFoundComponent() {
   return (
@@ -129,6 +130,31 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
+  useEffect(() => {
+    const syncFavicons = () => {
+      const favicon = getConfig().logo.favicon || "/favicon.png";
+      const icons = [
+        { rel: "icon", selector: "link[rel='icon']" },
+        { rel: "apple-touch-icon", selector: "link[rel='apple-touch-icon']" },
+      ];
+
+      icons.forEach(({ rel, selector }) => {
+        let link = document.querySelector(selector) as HTMLLinkElement | null;
+        if (!link) {
+          link = document.createElement("link");
+          link.rel = rel;
+          document.head.appendChild(link);
+        }
+        link.href = favicon;
+      });
+    };
+
+    syncFavicons();
+    window.addEventListener("siteConfigChanged", syncFavicons);
+
+    return () => window.removeEventListener("siteConfigChanged", syncFavicons);
+  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
