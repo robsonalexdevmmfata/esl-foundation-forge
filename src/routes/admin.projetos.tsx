@@ -1,13 +1,29 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  Area,
+  AreaChart,
+} from "recharts";
 import { AdminLayout } from "@/components/admin-layout";
-
-const initialProjetos = [
-  { nome: "Residencial Jardins", cliente: "Casa Vista", valor: "R$ 180.000", status: "Fechado", progresso: 92 },
-  { nome: "Prime Center", cliente: "Prime Center", valor: "R$ 420.000", status: "Em execução", progresso: 68 },
-  { nome: "Loja Leste", cliente: "Leste Group", valor: "R$ 95.000", status: "Aguardando aprovação", progresso: 42 },
-  { nome: "Sun Houses", cliente: "Residencial Sun", valor: "R$ 260.000", status: "Fechado", progresso: 100 },
-];
+import {
+  addProjeto,
+  brl,
+  computeMetrics,
+  removeProjeto,
+  updateProjeto,
+  useAdminData,
+} from "@/lib/admin-store";
 
 export const Route = createFileRoute("/admin/projetos")({
   component: () => (
@@ -17,38 +33,46 @@ export const Route = createFileRoute("/admin/projetos")({
   ),
 });
 
-function ProjetosPage() {
-  const [projetos, setProjetos] = useState(initialProjetos);
-  const [isOpen, setIsOpen] = useState(false);
-  const [form, setForm] = useState({
-    nome: "",
-    cliente: "",
-    valor: "",
-    status: "Em execução",
-  });
+const PIE_COLORS = ["#7c3aed", "#2563eb", "#f59e0b", "#059669", "#dc2626"];
 
-  const totalEmCarteira = useMemo(
-    () => projetos.reduce((acc, projeto) => acc + Number(String(projeto.valor).replace(/\D/g, "")) / 1000, 0),
-    [projetos],
-  );
+const emptyForm = {
+  nome: "",
+  cliente: "",
+  valor: "",
+  status: "Em execução",
+  progresso: "40",
+  inicio: new Date().toISOString().slice(0, 10),
+  prazo: "",
+};
+
+function ProjetosPage() {
+  const data = useAdminData();
+  const metrics = computeMetrics(data);
+  const [isOpen, setIsOpen] = useState(false);
+  const [form, setForm] = useState(emptyForm);
+  const [erro, setErro] = useState("");
 
   const handleCreateProject = () => {
-    if (!form.nome || !form.cliente || !form.valor) return;
-
-    setProjetos((current) => [
-      {
-        nome: form.nome,
-        cliente: form.cliente,
-        valor: `R$ ${Number(form.valor).toLocaleString("pt-BR")}`,
-        status: form.status,
-        progresso: form.status === "Fechado" ? 100 : form.status === "Em execução" ? 60 : 35,
-      },
-      ...current,
-    ]);
-
-    setForm({ nome: "", cliente: "", valor: "", status: "Em execução" });
+    if (!form.nome.trim() || !form.cliente.trim()) return setErro("Preencha nome e cliente.");
+    addProjeto({
+      nome: form.nome.trim(),
+      cliente: form.cliente.trim(),
+      valor: Number(form.valor) || 0,
+      status: form.status,
+      progresso: Math.min(100, Math.max(0, Number(form.progresso) || 0)),
+      inicio: form.inicio,
+      prazo: form.prazo || form.inicio,
+    });
+    setForm(emptyForm);
+    setErro("");
     setIsOpen(false);
   };
+
+  const cronograma = data.projetos.map((p) => ({
+    name: p.nome.length > 14 ? `${p.nome.slice(0, 14)}…` : p.nome,
+    progresso: p.progresso,
+    restante: Math.max(0, 100 - p.progresso),
+  }));
 
   return (
     <div className="space-y-6">
@@ -69,49 +93,94 @@ function ProjetosPage() {
       </div>
 
       <div className="grid gap-5 md:grid-cols-4">
-        <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Total em carteira</p>
-          <p className="mt-3 text-3xl font-bold text-slate-900">R$ {totalEmCarteira.toFixed(0)}K</p>
-        </div>
-        <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Em execução</p>
-          <p className="mt-3 text-3xl font-bold text-slate-900">{projetos.filter((p) => p.status === "Em execução").length}</p>
-        </div>
-        <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Concluídos</p>
-          <p className="mt-3 text-3xl font-bold text-slate-900">{projetos.filter((p) => p.status === "Fechado").length}</p>
-        </div>
-        <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
-          <p className="text-sm text-slate-500">Aguardando</p>
-          <p className="mt-3 text-3xl font-bold text-slate-900">{projetos.filter((p) => p.status === "Aguardando aprovação").length}</p>
-        </div>
+        <Stat label="Total em carteira" value={brl(metrics.carteira)} />
+        <Stat label="Em execução" value={String(metrics.projetosExecucao)} />
+        <Stat label="Concluídos" value={String(metrics.projetosConcluidos)} />
+        <Stat label="Aguardando" value={String(metrics.projetosAguardando)} />
       </div>
+
+      <div className="grid gap-5 xl:grid-cols-3">
+        <Panel title="Progresso por projeto" className="xl:col-span-2">
+          <ResponsiveContainer width="100%" height={280}>
+            <BarChart data={cronograma}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+              <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+              <YAxis unit="%" tick={{ fontSize: 12 }} />
+              <Tooltip formatter={(v: number) => `${v}%`} />
+              <Legend />
+              <Bar dataKey="progresso" name="Concluído" stackId="a" fill="#7c3aed" radius={[0, 0, 6, 6]} />
+              <Bar dataKey="restante" name="Restante" stackId="a" fill="#e2e8f0" radius={[6, 6, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </Panel>
+
+        <Panel title="Projetos por status">
+          <ResponsiveContainer width="100%" height={280}>
+            <PieChart>
+              <Pie data={metrics.porStatus} dataKey="value" nameKey="name" innerRadius={55} outerRadius={95} paddingAngle={3}>
+                {metrics.porStatus.map((entry, i) => (
+                  <Cell key={entry.name} fill={PIE_COLORS[i % PIE_COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </Panel>
+      </div>
+
+      <Panel title="Valor iniciado por mês">
+        <ResponsiveContainer width="100%" height={260}>
+          <AreaChart data={metrics.porMes}>
+            <defs>
+              <linearGradient id="grad-projetos" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#7c3aed" stopOpacity={0.5} />
+                <stop offset="100%" stopColor="#7c3aed" stopOpacity={0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+            <XAxis dataKey="name" tick={{ fontSize: 12 }} />
+            <YAxis tick={{ fontSize: 12 }} tickFormatter={(v: number) => `${Math.round(v / 1000)}K`} />
+            <Tooltip formatter={(v: number) => brl(v)} />
+            <Area type="monotone" dataKey="receita" name="Valor" stroke="#7c3aed" fill="url(#grad-projetos)" strokeWidth={2} />
+          </AreaChart>
+        </ResponsiveContainer>
+      </Panel>
 
       <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-800">Projetos em andamento</h2>
-          <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700">Status geral</span>
+          <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700">Progresso médio {metrics.progressoMedio}%</span>
         </div>
 
         <div className="space-y-5">
-          {projetos.map((projeto) => (
-            <div key={`${projeto.nome}-${projeto.cliente}`} className="rounded-2xl border border-slate-200 p-4">
+          {data.projetos.map((projeto) => (
+            <div key={projeto.id} className="rounded-2xl border border-slate-200 p-4">
               <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
                 <div>
                   <h3 className="text-lg font-semibold text-slate-800">{projeto.nome}</h3>
-                  <p className="text-sm text-slate-500">Cliente: {projeto.cliente}</p>
+                  <p className="text-sm text-slate-500">
+                    Cliente: {projeto.cliente} · Início {projeto.inicio.split("-").reverse().join("/")} · Prazo {projeto.prazo.split("-").reverse().join("/")}
+                  </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">{projeto.valor}</span>
-                  <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-                    projeto.status === "Fechado"
-                      ? "bg-emerald-100 text-emerald-700"
-                      : projeto.status === "Em execução"
-                        ? "bg-blue-100 text-blue-700"
-                        : "bg-amber-100 text-amber-700"
-                  }`}>
-                    {projeto.status}
-                  </span>
+                <div className="flex flex-wrap items-center gap-3">
+                  <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">{brl(projeto.valor)}</span>
+                  <select
+                    value={projeto.status}
+                    onChange={(e) => updateProjeto(projeto.id, { status: e.target.value })}
+                    className="rounded-lg border border-slate-300 px-2 py-1 text-xs font-medium text-slate-700"
+                  >
+                    <option>Em execução</option>
+                    <option>Aguardando aprovação</option>
+                    <option>Fechado</option>
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => removeProjeto(projeto.id)}
+                    className="rounded-lg border border-red-200 px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-50"
+                  >
+                    Excluir
+                  </button>
                 </div>
               </div>
 
@@ -120,15 +189,18 @@ function ProjetosPage() {
                   <span>Progresso</span>
                   <span>{projeto.progresso}%</span>
                 </div>
-                <div className="h-2.5 overflow-hidden rounded-full bg-slate-200">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-600"
-                    style={{ width: `${projeto.progresso}%` }}
-                  />
-                </div>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={projeto.progresso}
+                  onChange={(e) => updateProjeto(projeto.id, { progresso: Number(e.target.value) })}
+                  className="w-full accent-violet-600"
+                />
               </div>
             </div>
           ))}
+          {data.projetos.length === 0 && <p className="py-6 text-center text-slate-400">Nenhum projeto cadastrado.</p>}
         </div>
       </div>
 
@@ -141,26 +213,44 @@ function ProjetosPage() {
             </div>
 
             <div className="space-y-4">
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">Nome do projeto</label>
-                <input value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-violet-500" />
+              <Field label="Nome do projeto">
+                <input value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} className={inputClass} />
+              </Field>
+              <Field label="Cliente">
+                <input
+                  list="clientes-existentes"
+                  value={form.cliente}
+                  onChange={(e) => setForm({ ...form, cliente: e.target.value })}
+                  className={inputClass}
+                />
+                <datalist id="clientes-existentes">
+                  {data.clientes.map((c) => (
+                    <option key={c.id} value={c.nome} />
+                  ))}
+                </datalist>
+              </Field>
+              <Field label="Valor (R$)">
+                <input type="number" value={form.valor} onChange={(e) => setForm({ ...form, valor: e.target.value })} className={inputClass} />
+              </Field>
+              <div className="grid grid-cols-2 gap-3">
+                <Field label="Início">
+                  <input type="date" value={form.inicio} onChange={(e) => setForm({ ...form, inicio: e.target.value })} className={inputClass} />
+                </Field>
+                <Field label="Prazo">
+                  <input type="date" value={form.prazo} onChange={(e) => setForm({ ...form, prazo: e.target.value })} className={inputClass} />
+                </Field>
               </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">Cliente</label>
-                <input value={form.cliente} onChange={(e) => setForm({ ...form, cliente: e.target.value })} className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-violet-500" />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">Valor</label>
-                <input type="number" value={form.valor} onChange={(e) => setForm({ ...form, valor: e.target.value })} className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-violet-500" />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700">Status</label>
-                <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-violet-500">
+              <Field label="Status">
+                <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className={inputClass}>
                   <option>Em execução</option>
                   <option>Aguardando aprovação</option>
                   <option>Fechado</option>
                 </select>
-              </div>
+              </Field>
+              <Field label={`Progresso (${form.progresso}%)`}>
+                <input type="range" min={0} max={100} value={form.progresso} onChange={(e) => setForm({ ...form, progresso: e.target.value })} className="w-full accent-violet-600" />
+              </Field>
+              {erro && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erro}</p>}
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
@@ -170,6 +260,35 @@ function ProjetosPage() {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+const inputClass = "w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-violet-500";
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className="mb-1 block text-sm font-medium text-slate-700">{label}</label>
+      {children}
+    </div>
+  );
+}
+
+function Stat({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
+      <p className="text-sm text-slate-500">{label}</p>
+      <p className="mt-3 text-3xl font-bold text-slate-900">{value}</p>
+    </div>
+  );
+}
+
+function Panel({ title, children, className = "" }: { title: string; children: React.ReactNode; className?: string }) {
+  return (
+    <div className={`rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)] ${className}`}>
+      <h3 className="mb-4 text-base font-semibold text-slate-800">{title}</h3>
+      {children}
     </div>
   );
 }
