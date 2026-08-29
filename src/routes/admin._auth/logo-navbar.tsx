@@ -47,7 +47,8 @@ function LogoNavbarEditor() {
 
   const handleLinkChange = (index: number, field: "href" | "label", value: string) => {
     const newLinks = [...config.navbar.links];
-    newLinks[index] = { ...newLinks[index], [field]: value };
+    const current = newLinks[index] ?? { href: "#", label: "" };
+    newLinks[index] = { ...current, [field]: value };
     const newConfig = {
       ...config,
       navbar: { ...config.navbar, links: newLinks },
