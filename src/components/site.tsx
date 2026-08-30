@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import logoPng from "@/assets/logo.png";
-import { getConfig } from "@/lib/site-config";
+import { getConfig, EMPRESA } from "@/lib/site-config";
 
 export const WHATSAPP =
-  "https://wa.me/5511999999999?text=" +
-  encodeURIComponent(
-    "Olá, ESL FACILITY! Gostaria de solicitar um orçamento para o meu projeto.",
-  );
+  `https://wa.me/${EMPRESA.whatsapp}?text=` +
+  encodeURIComponent(EMPRESA.mensagemWhatsapp);
+
+const SOCIAIS = [
+  { label: "Instagram", url: "https://www.instagram.com/eslempreendimentos" },
+  { label: "LinkedIn", url: "https://www.linkedin.com/company/esl-empreendimentos" },
+  { label: "Facebook", url: "https://www.facebook.com/eslempreendimentos" },
+];
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -28,19 +32,19 @@ export function Header() {
         <a href="#inicio" className="flex items-center">
           <img
             src={config.logo.navbar || logoPng}
-            alt="ESL Facility — construção civil"
+            alt="E.S.L & Empreendimentos — serviços corporativos e institucionais"
             className="h-16 w-auto md:h-20"
             width={300}
             height={80}
           />
         </a>
 
-        <nav className="hidden items-center gap-4 md:gap-7 lg:flex">
+        <nav className="hidden items-center gap-4 md:gap-6 lg:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="font-display text-xs font-semibold tracking-wide transition-colors hover:opacity-80 sm:text-sm md:text-sm"
+              className="font-display text-xs font-semibold tracking-wide transition-colors hover:opacity-80 sm:text-sm"
               style={{ color: config.colors.primary }}
             >
               {l.label}
@@ -118,11 +122,18 @@ export function Footer() {
         <div>
           <img
             src={config.logo.footer || logoPng}
-            alt="ESL Facility — construção civil"
+            alt="E.S.L & Empreendimentos"
             className="h-16 w-auto sm:h-20"
           />
           <p className="mt-3 max-w-xs text-sm text-background/70">
             {config.texts.footerDescription}
+          </p>
+          <p className="mt-4 text-xs leading-relaxed text-background/60">
+            {EMPRESA.razaoSocial}
+            <br />
+            CNPJ {EMPRESA.cnpj}
+            <br />
+            {EMPRESA.sede}
           </p>
         </div>
 
@@ -148,23 +159,23 @@ export function Footer() {
 
         <div>
           <p className="font-display text-sm font-bold uppercase tracking-widest text-mostarda">
-            Fale com a gente
+            Contato
           </p>
           <ul className="mt-4 space-y-2 text-sm text-background/80">
-            <li>Av. das Construções, 1200 — São Paulo/SP</li>
-            <li>(11) 99999-9999</li>
-            <li>contato@eslfacility.com.br</li>
+            <li>{EMPRESA.sede} · {EMPRESA.atuacao}</li>
+            <li>{EMPRESA.telefone}</li>
+            <li>{EMPRESA.email}</li>
           </ul>
           <div className="mt-4 flex flex-wrap gap-2 sm:gap-3">
-            {["Instagram", "LinkedIn", "Facebook"].map((s) => (
+            {SOCIAIS.map((s) => (
               <a
-                key={s}
-                href={WHATSAPP}
+                key={s.label}
+                href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-md border border-terra px-3 py-1.5 text-xs font-semibold text-terra transition-colors hover:bg-terra hover:text-background"
               >
-                {s}
+                {s.label}
               </a>
             ))}
           </div>
@@ -194,7 +205,7 @@ export function WhatsAppFloat() {
       rel="noopener noreferrer"
       className="fixed bottom-4 right-4 z-50 rounded-full bg-floresta px-4 py-2.5 font-display text-xs font-bold text-background shadow-lg transition-colors hover:bg-terra sm:bottom-5 sm:right-5 sm:px-5 sm:py-3 sm:text-sm"
     >
-      Falar no WhatsApp
+      WhatsApp
     </a>
   );
 }
