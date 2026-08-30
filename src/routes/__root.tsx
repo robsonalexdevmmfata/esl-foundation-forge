@@ -78,13 +78,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ESL Facility — Construção Civil e Engenharia" },
+      {
+        title:
+          "E.S.L & Empreendimentos — Comunicação Institucional, Coordenação e Execução",
+      },
       {
         name: "description",
         content:
-          "ESL Facility: construção residencial, comercial e industrial, retrofit e manutenção predial com excelência e sustentabilidade.",
+          "Serviços corporativos e institucionais em comunicação, coordenação e execução de projetos e operações, com equipe própria e contratos formais, em todo o território nacional.",
       },
-      { name: "author", content: "ESL Facility" },
+      { name: "author", content: "E.S.L & Empreendimentos LTDA" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
