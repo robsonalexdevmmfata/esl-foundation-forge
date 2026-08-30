@@ -35,55 +35,79 @@ export interface SiteConfig {
   };
 }
 
+export const EMPRESA = {
+  razaoSocial: "E.S.L & Empreendimentos LTDA",
+  cnpj: "52.306.432/0001-29",
+  telefone: "(38) 9 9842-1869",
+  whatsapp: "5538998421869",
+  email: "contato@gestaoesl.com",
+  sede: "Serranópolis de Minas – MG",
+  atuacao: "Atuação em todo o território nacional",
+  horario: "Atendimento de segunda a sexta-feira, das 8h às 18h",
+  mensagemWhatsapp:
+    "Prezados, solicito contato para apresentação de proposta.",
+};
+
 export const defaultConfig: SiteConfig = {
   logo: {
     navbar: "/logo.png",
     footer: "/logo.png",
     favicon: "/favicon.png",
-    hero: "/hero-construcao.jpg",
-    about: "/equipe.jpg",
+    hero: "/corporativo-hero.jpg",
+    about: "/equipe-corporativa.jpg",
   },
   navbar: {
     links: [
       { href: "#inicio", label: "Início" },
-      { href: "#sobre", label: "Sobre Nós" },
-      { href: "#servicos", label: "Serviços" },
-      { href: "#projetos", label: "Projetos" },
+      { href: "#empresa", label: "A Empresa" },
+      { href: "#areas", label: "Áreas de Atuação" },
+      { href: "#modelos", label: "Modelos de Contratação" },
+      { href: "#metodologia", label: "Metodologia" },
       { href: "#contato", label: "Contato" },
     ],
-    buttonText: "Orçamento Rápido",
+    buttonText: "Solicitar proposta",
   },
   colors: {
-    primary: "#166534",
-    secondary: "#78350f",
-    accent: "#f59e0b",
+    primary: "#1E5F4D",
+    secondary: "#333333",
+    accent: "#E0B05C",
     background: "#ffffff",
-    text: "#1f2937",
+    text: "#333333",
   },
   texts: {
-    heroTitle: "ESL FACILITY: Construindo o Futuro com Excelência e Sustentabilidade.",
-    heroSubtitle: "Soluções completas em engenharia e construção civil para projetos residenciais, comerciais e industriais.",
-    heroBadge: "Engenharia & Construção",
-    aboutTitle: "Nossa Missão",
-    aboutText: "Transformar terrenos, plantas e ideias em obras que sustentam gerações. Há mais de 15 anos a ESL FACILITY entrega projetos com rigor técnico, transparência de orçamento e respeito absoluto a prazos.",
-    aboutTextSecondary: "Trabalhamos com equipes próprias, engenheiros responsáveis em campo e protocolos de segurança que não abrem exceção. Cada decisão passa por três filtros: durabilidade, eficiência e menor impacto ambiental possível.",
-    contactTitle: "Pronto para dar vida ao seu projeto?",
-    contactText: "Conte o que você quer construir. Em até 24 horas úteis um engenheiro da ESL FACILITY retorna com os próximos passos e uma estimativa realista.",
-    footerDescription: "Engenharia, construção e manutenção predial com técnica, segurança e responsabilidade ambiental.",
-    footerCopyright: "© 2024 ESL FACILITY. Todos os direitos reservados.",
-    servicesTitle: "Nossos Serviços",
-    servicesDescription: "Do estudo de viabilidade à manutenção depois da entrega: um só time responsável por toda a jornada da sua obra.",
-    projectsTitle: "Destaque de Projetos",
-    projectsDescription: "Obras entregues que hoje funcionam, valorizam e duram. Passe o mouse para conhecer cada uma.",
+    heroTitle: "E.S.L & Empreendimentos",
+    heroSubtitle:
+      "Empresa de serviços corporativos e institucionais, com atuação em comunicação institucional, coordenação e execução de projetos e operações, mediante equipe própria e contratos formais.",
+    heroBadge: "Comunicação Institucional · Coordenação · Execução",
+    aboutTitle: "Apresentação institucional",
+    aboutText:
+      "A E.S.L & Empreendimentos LTDA presta serviços corporativos e institucionais a empresas privadas, órgãos públicos, entidades de economia mista e associações, com atuação em todo o território nacional.",
+    aboutTextSecondary:
+      "A empresa atua em três frentes principais: comunicação institucional, coordenação de operações e execução de projetos. Sua estrutura compreende a concepção do trabalho, a mobilização e a gestão dos profissionais, a supervisão das atividades e a entrega documentada dos resultados contratados.",
+    contactTitle: "Solicitação de proposta",
+    contactText:
+      "Descreva o objeto pretendido e o prazo estimado. O retorno é realizado em até 24 horas úteis, com os encaminhamentos e a proposta correspondente.",
+    footerDescription:
+      "Serviços corporativos e institucionais em comunicação, coordenação e execução, com equipe própria e gestão inclusa.",
+    footerCopyright:
+      "© 2026 E.S.L & Empreendimentos LTDA. Todos os direitos reservados.",
+    servicesTitle: "Serviços prestados",
+    servicesDescription:
+      "A empresa atua de forma integrada ou segmentada, conforme o escopo definido pelo contratante.",
+    projectsTitle: "Registro de contratos executados",
+    projectsDescription:
+      "Galeria reservada para registro fotográfico próprio de contratos executados.",
   },
 };
+
+const STORAGE_KEY = "site_config_v2";
 
 export function getConfig(): SiteConfig {
   if (typeof window === "undefined") return defaultConfig;
 
-  const stored = localStorage.getItem("site_config");
+  const stored = localStorage.getItem(STORAGE_KEY);
   if (!stored) {
-    localStorage.setItem("site_config", JSON.stringify(defaultConfig));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultConfig));
     return defaultConfig;
   }
 
@@ -98,7 +122,7 @@ export function getConfig(): SiteConfig {
       texts: { ...defaultConfig.texts, ...parsed.texts },
     };
   } catch {
-    localStorage.setItem("site_config", JSON.stringify(defaultConfig));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultConfig));
     return defaultConfig;
   }
 }
@@ -115,6 +139,6 @@ export function saveConfig(config: SiteConfig): void {
     texts: { ...defaultConfig.texts, ...(config.texts ?? {}) },
   };
 
-  localStorage.setItem("site_config", JSON.stringify(nextConfig));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(nextConfig));
   window.dispatchEvent(new Event("siteConfigChanged"));
 }
