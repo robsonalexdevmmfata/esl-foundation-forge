@@ -1,11 +1,9 @@
+export type LogoKey = "navbar" | "footer" | "favicon" | "hero" | "about";
+
 export interface SiteConfig {
-  logo: {
-    navbar: string;
-    footer: string;
-    favicon: string;
-    hero: string;
-    about: string;
-  };
+  logo: Record<LogoKey, string>;
+  /** Nome original do arquivo enviado por upload (para exibição no painel). */
+  logoNames: Partial<Record<LogoKey, string>>;
   navbar: {
     links: Array<{ href: string; label: string }>;
     buttonText: string;
@@ -53,9 +51,10 @@ export const defaultConfig: SiteConfig = {
     navbar: "/logo.png",
     footer: "/logo.png",
     favicon: "/favicon.png",
-    hero: "/corporativo-hero.jpg",
-    about: "/equipe-corporativa.jpg",
+    hero: "",
+    about: "",
   },
+  logoNames: {},
   navbar: {
     links: [
       { href: "#inicio", label: "Início" },
@@ -117,6 +116,7 @@ export function getConfig(): SiteConfig {
       ...defaultConfig,
       ...parsed,
       logo: { ...defaultConfig.logo, ...parsed.logo },
+      logoNames: { ...(parsed.logoNames ?? {}) },
       navbar: { ...defaultConfig.navbar, ...parsed.navbar },
       colors: { ...defaultConfig.colors, ...parsed.colors },
       texts: { ...defaultConfig.texts, ...parsed.texts },
@@ -134,6 +134,7 @@ export function saveConfig(config: SiteConfig): void {
     ...defaultConfig,
     ...config,
     logo: { ...defaultConfig.logo, ...(config.logo ?? {}) },
+    logoNames: { ...(config.logoNames ?? {}) },
     navbar: { ...defaultConfig.navbar, ...(config.navbar ?? {}) },
     colors: { ...defaultConfig.colors, ...(config.colors ?? {}) },
     texts: { ...defaultConfig.texts, ...(config.texts ?? {}) },
@@ -142,3 +143,23 @@ export function saveConfig(config: SiteConfig): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(nextConfig));
   window.dispatchEvent(new Event("siteConfigChanged"));
 }
+
+/** Converte as cores do painel em variáveis CSS do design system da landing. */
+export function themeVars(colors: SiteConfig["colors"]): Record<string, string> {
+  return {
+    "--floresta": colors.primary,
+    "--floresta-dark": colors.primary,
+    "--primary": colors.primary,
+    "--ring": colors.primary,
+    "--secondary-foreground": colors.primary,
+    "--carvao": colors.secondary,
+    "--mostarda": colors.accent,
+    "--background": colors.background,
+    "--card": colors.background,
+    "--foreground": colors.text,
+    "--card-foreground": colors.text,
+  };
+}
+
+/** true quando o valor é um arquivo enviado por upload (data URL). */
+export const isUploaded = (value: string) => (value || "").startsWith("data:");
