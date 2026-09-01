@@ -145,7 +145,7 @@ export function saveConfig(config: SiteConfig): void {
 }
 
 /** Converte as cores do painel em variáveis CSS do design system da landing. */
-export function themeVars(colors: SiteConfig["colors"]): React.CSSProperties {
+export function themeVars(colors: SiteConfig["colors"]): Record<string, string> {
   return {
     "--floresta": colors.primary,
     "--floresta-dark": colors.primary,
@@ -158,7 +158,7 @@ export function themeVars(colors: SiteConfig["colors"]): React.CSSProperties {
     "--card": colors.background,
     "--foreground": colors.text,
     "--card-foreground": colors.text,
-  } as React.CSSProperties;
+  };
 }
 
 /** true quando o valor é um arquivo enviado por upload (data URL). */
