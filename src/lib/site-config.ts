@@ -51,8 +51,8 @@ export const defaultConfig: SiteConfig = {
     navbar: "/logo.png",
     footer: "/logo.png",
     favicon: "/favicon.png",
-    hero: "/corporativo-hero.jpg",
-    about: "/equipe-corporativa.jpg",
+    hero: "",
+    about: "",
   },
   logoNames: {},
   navbar: {
