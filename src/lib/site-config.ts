@@ -116,6 +116,7 @@ export function getConfig(): SiteConfig {
       ...defaultConfig,
       ...parsed,
       logo: { ...defaultConfig.logo, ...parsed.logo },
+      logoNames: { ...(parsed.logoNames ?? {}) },
       navbar: { ...defaultConfig.navbar, ...parsed.navbar },
       colors: { ...defaultConfig.colors, ...parsed.colors },
       texts: { ...defaultConfig.texts, ...parsed.texts },
