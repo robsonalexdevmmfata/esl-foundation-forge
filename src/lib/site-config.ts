@@ -134,6 +134,7 @@ export function saveConfig(config: SiteConfig): void {
     ...defaultConfig,
     ...config,
     logo: { ...defaultConfig.logo, ...(config.logo ?? {}) },
+    logoNames: { ...(config.logoNames ?? {}) },
     navbar: { ...defaultConfig.navbar, ...(config.navbar ?? {}) },
     colors: { ...defaultConfig.colors, ...(config.colors ?? {}) },
     texts: { ...defaultConfig.texts, ...(config.texts ?? {}) },
