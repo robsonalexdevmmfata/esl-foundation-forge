@@ -54,6 +54,7 @@ export const defaultConfig: SiteConfig = {
     hero: "/corporativo-hero.jpg",
     about: "/equipe-corporativa.jpg",
   },
+  logoNames: {},
   navbar: {
     links: [
       { href: "#inicio", label: "Início" },
