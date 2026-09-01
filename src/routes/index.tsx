@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header, Footer, WhatsAppFloat, WHATSAPP } from "@/components/site";
-import { EMPRESA } from "@/lib/site-config";
+import { EMPRESA, themeVars } from "@/lib/site-config";
 import { useSiteConfig } from "@/lib/use-site-config";
 import heroCorporativo from "@/assets/corporativo-hero.jpg";
 import equipeCorporativa from "@/assets/equipe-corporativa.jpg";
@@ -163,13 +163,13 @@ function Index() {
   const t = config.texts;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" style={themeVars(config.colors)}>
       <Header />
       <main>
         {/* HERO */}
         <section id="inicio" className="relative isolate">
           <img
-            src={heroCorporativo}
+            src={config.logo.hero || heroCorporativo}
             alt="Equipe corporativa da E.S.L & Empreendimentos em reunião de trabalho"
             className="absolute inset-0 h-full w-full object-cover"
             width={1600}
@@ -245,7 +245,7 @@ function Index() {
               <div className="absolute -left-4 -top-4 h-16 w-16 border-l-4 border-t-4 border-mostarda sm:h-24 sm:w-24" />
               <div className="absolute -bottom-4 -right-4 h-16 w-16 border-b-4 border-r-4 border-mostarda sm:h-24 sm:w-24" />
               <img
-                src={equipeCorporativa}
+                src={config.logo.about || equipeCorporativa}
                 alt="Profissionais da E.S.L & Empreendimentos analisando relatórios em ambiente corporativo"
                 loading="lazy"
                 width={1200}
