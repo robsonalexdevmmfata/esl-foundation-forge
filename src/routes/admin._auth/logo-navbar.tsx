@@ -11,6 +11,68 @@ export const Route = createFileRoute("/admin/_auth/logo-navbar")({
   ),
 });
 
+function ImageField({
+  type,
+  label,
+  placeholder,
+  value,
+  fileName,
+  onChange,
+  onUpload,
+}: {
+  type: LogoKey;
+  label: string;
+  placeholder: string;
+  value: string;
+  fileName?: string;
+  onChange: (type: LogoKey, value: string) => void;
+  onUpload: (type: LogoKey, file?: File | null) => void;
+}) {
+    const uploaded = isUploaded(value);
+    const ext = (fileName?.split(".").pop() || "").toUpperCase();
+
+    return (
+      <div>
+        <label className="mb-2 block text-sm font-medium text-gray-700">{label}</label>
+
+        {uploaded ? (
+          <div className="flex items-center gap-3 rounded-lg border border-gray-300 bg-gray-50 p-3">
+            <img src={value} alt={fileName || label} className="h-14 w-14 shrink-0 rounded-md border border-gray-200 bg-white object-contain" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-semibold text-gray-800">{fileName || "imagem enviada"}</p>
+              {ext && <p className="text-xs text-gray-500">Arquivo {ext}</p>}
+            </div>
+            <label className="cursor-pointer rounded-lg border border-green-600 bg-green-600 px-3 py-2 text-xs font-medium text-white hover:bg-green-700">
+              Trocar
+              <input type="file" accept="image/*" className="hidden" onChange={(e) => onUpload(type, e.target.files?.[0])} />
+            </label>
+            <button
+              type="button"
+              onClick={() => onChange(type, "")}
+              className="rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50"
+            >
+              Remover
+            </button>
+          </div>
+        ) : (
+          <div className="flex gap-3">
+            <input
+              type="text"
+              value={value}
+              onChange={(e) => onChange(type, e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-green-500"
+              placeholder={placeholder}
+            />
+            <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-green-600 bg-green-600 px-4 py-3 text-sm font-medium text-white hover:bg-green-700">
+              Upload
+              <input type="file" accept="image/*" className="hidden" onChange={(e) => onUpload(type, e.target.files?.[0])} />
+            </label>
+          </div>
+        )}
+      </div>
+    );
+  }
+
 function LogoNavbarEditor() {
   const [config, setConfig] = useState<SiteConfig>(() => getConfig());
   const [previewLogo, setPreviewLogo] = useState(() => getConfig().logo.navbar);
@@ -44,54 +106,6 @@ function LogoNavbarEditor() {
       handleLogoChange(type, result, file.name);
     };
     reader.readAsDataURL(file);
-  };
-
-  const ImageField = ({ type, label, placeholder }: { type: LogoKey; label: string; placeholder: string }) => {
-    const value = config.logo[type];
-    const uploaded = isUploaded(value);
-    const fileName = config.logoNames?.[type];
-    const ext = (fileName?.split(".").pop() || "").toUpperCase();
-
-    return (
-      <div>
-        <label className="mb-2 block text-sm font-medium text-gray-700">{label}</label>
-
-        {uploaded ? (
-          <div className="flex items-center gap-3 rounded-lg border border-gray-300 bg-gray-50 p-3">
-            <img src={value} alt={fileName || label} className="h-14 w-14 shrink-0 rounded-md border border-gray-200 bg-white object-contain" />
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-semibold text-gray-800">{fileName || "imagem enviada"}</p>
-              {ext && <p className="text-xs text-gray-500">Arquivo {ext}</p>}
-            </div>
-            <label className="cursor-pointer rounded-lg border border-green-600 bg-green-600 px-3 py-2 text-xs font-medium text-white hover:bg-green-700">
-              Trocar
-              <input type="file" accept="image/*" className="hidden" onChange={(e) => handleUpload(type, e.target.files?.[0])} />
-            </label>
-            <button
-              type="button"
-              onClick={() => handleLogoChange(type, "")}
-              className="rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50"
-            >
-              Remover
-            </button>
-          </div>
-        ) : (
-          <div className="flex gap-3">
-            <input
-              type="text"
-              value={value}
-              onChange={(e) => handleLogoChange(type, e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-transparent focus:ring-2 focus:ring-green-500"
-              placeholder={placeholder}
-            />
-            <label className="inline-flex cursor-pointer items-center justify-center rounded-lg border border-green-600 bg-green-600 px-4 py-3 text-sm font-medium text-white hover:bg-green-700">
-              Upload
-              <input type="file" accept="image/*" className="hidden" onChange={(e) => handleUpload(type, e.target.files?.[0])} />
-            </label>
-          </div>
-        )}
-      </div>
-    );
   };
 
   const handleLinkChange = (index: number, field: "href" | "label", value: string) => {
@@ -179,11 +193,11 @@ function LogoNavbarEditor() {
           <h2 className="text-xl font-bold text-gray-800 mb-6">Configurações de Logo</h2>
 
           <div className="space-y-6">
-            <ImageField type="navbar" label="Logo da Navbar" placeholder="/logo.png" />
-            <ImageField type="footer" label="Logo do Rodapé" placeholder="/logo.png" />
-            <ImageField type="favicon" label="Favicon" placeholder="/favicon.png" />
-            <ImageField type="hero" label="Imagem do Hero" placeholder="/corporativo-hero.jpg" />
-            <ImageField type="about" label="Imagem da Seção A Empresa" placeholder="/equipe-corporativa.jpg" />
+            <ImageField type="navbar" label="Logo da Navbar" placeholder="/logo.png" value={config.logo.navbar} fileName={config.logoNames?.navbar} onChange={handleLogoChange} onUpload={handleUpload} />
+            <ImageField type="footer" label="Logo do Rodapé" placeholder="/logo.png" value={config.logo.footer} fileName={config.logoNames?.footer} onChange={handleLogoChange} onUpload={handleUpload} />
+            <ImageField type="favicon" label="Favicon" placeholder="/favicon.png" value={config.logo.favicon} fileName={config.logoNames?.favicon} onChange={handleLogoChange} onUpload={handleUpload} />
+            <ImageField type="hero" label="Imagem do Hero" placeholder="/corporativo-hero.jpg" value={config.logo.hero} fileName={config.logoNames?.hero} onChange={handleLogoChange} onUpload={handleUpload} />
+            <ImageField type="about" label="Imagem da Seção A Empresa" placeholder="/equipe-corporativa.jpg" value={config.logo.about} fileName={config.logoNames?.about} onChange={handleLogoChange} onUpload={handleUpload} />
           </div>
         </div>
 
