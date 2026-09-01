@@ -143,3 +143,23 @@ export function saveConfig(config: SiteConfig): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(nextConfig));
   window.dispatchEvent(new Event("siteConfigChanged"));
 }
+
+/** Converte as cores do painel em variáveis CSS do design system da landing. */
+export function themeVars(colors: SiteConfig["colors"]): React.CSSProperties {
+  return {
+    "--floresta": colors.primary,
+    "--floresta-dark": colors.primary,
+    "--primary": colors.primary,
+    "--ring": colors.primary,
+    "--secondary-foreground": colors.primary,
+    "--carvao": colors.secondary,
+    "--mostarda": colors.accent,
+    "--background": colors.background,
+    "--card": colors.background,
+    "--foreground": colors.text,
+    "--card-foreground": colors.text,
+  } as React.CSSProperties;
+}
+
+/** true quando o valor é um arquivo enviado por upload (data URL). */
+export const isUploaded = (value: string) => (value || "").startsWith("data:");
