@@ -170,6 +170,7 @@ function Index() {
         <section id="inicio" className="relative isolate">
           <img
             src={config.logo.hero || heroCorporativo}
+            onError={(e) => ((e.currentTarget as HTMLImageElement).src = heroCorporativo)}
             alt="Equipe corporativa da E.S.L & Empreendimentos em reunião de trabalho"
             className="absolute inset-0 h-full w-full object-cover"
             width={1600}
@@ -246,6 +247,7 @@ function Index() {
               <div className="absolute -bottom-4 -right-4 h-16 w-16 border-b-4 border-r-4 border-mostarda sm:h-24 sm:w-24" />
               <img
                 src={config.logo.about || equipeCorporativa}
+                onError={(e) => ((e.currentTarget as HTMLImageElement).src = equipeCorporativa)}
                 alt="Profissionais da E.S.L & Empreendimentos analisando relatórios em ambiente corporativo"
                 loading="lazy"
                 width={1200}
