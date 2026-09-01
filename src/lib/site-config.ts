@@ -1,11 +1,9 @@
+export type LogoKey = "navbar" | "footer" | "favicon" | "hero" | "about";
+
 export interface SiteConfig {
-  logo: {
-    navbar: string;
-    footer: string;
-    favicon: string;
-    hero: string;
-    about: string;
-  };
+  logo: Record<LogoKey, string>;
+  /** Nome original do arquivo enviado por upload (para exibição no painel). */
+  logoNames: Partial<Record<LogoKey, string>>;
   navbar: {
     links: Array<{ href: string; label: string }>;
     buttonText: string;
