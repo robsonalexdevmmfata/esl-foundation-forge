@@ -549,6 +549,28 @@ function Index() {
               </button>
             </form>
           </div>
+
+          {/* EMPRESAS CONTRATANTES */}
+          <div className="mx-auto mt-14 max-w-6xl px-4 sm:px-5 md:mt-20">
+            <h3 className="text-center font-display text-lg font-extrabold text-floresta sm:text-2xl">
+              Empresas que já nos contrataram
+            </h3>
+            <div className="mt-8 grid grid-cols-2 items-center gap-6 sm:grid-cols-3 md:grid-cols-6 md:gap-8">
+              {CONTRATANTES.map((c) => (
+                <div
+                  key={c.nome}
+                  className="flex h-24 items-center justify-center rounded-md bg-card p-4 shadow-sm"
+                >
+                  <img
+                    src={c.src}
+                    alt={`Logotipo ${c.nome}`}
+                    loading="lazy"
+                    className="max-h-16 w-auto max-w-full object-contain"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         </section>
       </main>
       <Footer />
