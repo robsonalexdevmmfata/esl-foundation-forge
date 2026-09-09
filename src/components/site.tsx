@@ -149,11 +149,6 @@ export function Footer() {
                 </a>
               </li>
             ))}
-            <li>
-              <a href="#contato" className="hover:text-mostarda">
-                Política de Privacidade
-              </a>
-            </li>
           </ul>
         </div>
 
@@ -183,14 +178,8 @@ export function Footer() {
       </div>
 
       <div className="border-t border-background/15">
-        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-4 text-xs text-background/70 sm:px-5 sm:py-5 md:flex-row md:items-center md:justify-between">
+        <div className="mx-auto max-w-6xl px-4 py-4 text-xs text-background/70 sm:px-5 sm:py-5">
           <p>{config.texts.footerCopyright}</p>
-          <p className="flex flex-wrap items-center gap-x-2 gap-y-1">
-            <span>Desenvolvido por</span>
-            <a href="https://www.agenciainfotech.com.br" target="_blank" rel="noopener noreferrer" className="font-semibold text-mostarda hover:text-terra">
-              Agência Info Tech
-            </a>
-          </p>
         </div>
       </div>
     </footer>
