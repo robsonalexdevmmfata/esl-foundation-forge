@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   BarChart,
   Bar,
@@ -15,7 +15,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { AdminLayout } from "@/components/admin-layout";
-import { AdminLink } from "@/components/admin-layout";
 import { brl, computeMetrics, useAdminData, whatsappLink } from "@/lib/admin-store";
 import { useSiteConfig } from "@/lib/use-site-config";
 
@@ -162,9 +161,9 @@ function AdminDashboard() {
         <Card>
           <div className="mb-5 flex items-center justify-between gap-3">
             <h3 className="text-lg font-semibold text-slate-800">Projetos em andamento</h3>
-            <AdminLink to="/admin/projetos" className="text-sm font-semibold text-emerald-700 hover:underline">
+            <Link to="/admin/projetos" className="text-sm font-semibold text-emerald-700 hover:underline">
               Gerenciar
-            </AdminLink>
+            </Link>
           </div>
           <div className="space-y-4">
             {data.projetos.length === 0 && <p className="text-sm text-slate-500">Nenhum projeto cadastrado.</p>}
@@ -193,9 +192,9 @@ function AdminDashboard() {
         <Card>
           <div className="mb-5 flex items-center justify-between gap-3">
             <h3 className="text-lg font-semibold text-slate-800">Clientes recentes</h3>
-            <AdminLink to="/admin/clientes" className="text-sm font-semibold text-emerald-700 hover:underline">
+            <Link to="/admin/clientes" className="text-sm font-semibold text-emerald-700 hover:underline">
               Gerenciar
-            </AdminLink>
+            </Link>
           </div>
           <div className="space-y-3">
             {data.clientes.length === 0 && <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>}

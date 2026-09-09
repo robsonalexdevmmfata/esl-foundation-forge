@@ -24,7 +24,7 @@ function ImageField({
   label: string;
   placeholder: string;
   value: string;
-  fileName?: string;
+  fileName?: string | undefined;
   onChange: (type: LogoKey, value: string) => void;
   onUpload: (type: LogoKey, file?: File | null) => void;
 }) {
