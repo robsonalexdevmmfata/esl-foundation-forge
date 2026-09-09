@@ -8,6 +8,21 @@ import projeto1 from "@/assets/projeto-1.jpg";
 import projeto2 from "@/assets/projeto-2.jpg";
 import projeto3 from "@/assets/projeto-3.jpg";
 import projeto4 from "@/assets/projeto-4.jpg";
+import logoMg from "@/assets/mg.jpg.asset.json";
+import logoMercadoLivre from "@/assets/mercado-livre.jpg.asset.json";
+import logoSebrae from "@/assets/sebrae.jpg.asset.json";
+import logoFecitur from "@/assets/fecitur.jpg.asset.json";
+import logoCodemge from "@/assets/codemge.jpg.asset.json";
+import logoEquinox from "@/assets/equinox.jpg.asset.json";
+
+const CONTRATANTES: Array<{ nome: string; src: string }> = [
+  { nome: "Estado de Minas Gerais", src: logoMg.url },
+  { nome: "CODEMGE", src: logoCodemge.url },
+  { nome: "SEBRAE", src: logoSebrae.url },
+  { nome: "Mercado Livre", src: logoMercadoLivre.url },
+  { nome: "FECITUR", src: logoFecitur.url },
+  { nome: "Equinox Gold", src: logoEquinox.url },
+];
 
 const title =
   "E.S.L & Empreendimentos — Comunicação Institucional, Coordenação e Execução";
@@ -548,6 +563,28 @@ function Index() {
                 Enviar solicitação
               </button>
             </form>
+          </div>
+
+          {/* EMPRESAS CONTRATANTES */}
+          <div className="mx-auto mt-14 max-w-6xl px-4 sm:px-5 md:mt-20">
+            <h3 className="text-center font-display text-lg font-extrabold text-floresta sm:text-2xl">
+              Empresas que já nos contrataram
+            </h3>
+            <div className="mt-8 grid grid-cols-2 items-center gap-6 sm:grid-cols-3 md:grid-cols-6 md:gap-8">
+              {CONTRATANTES.map((c) => (
+                <div
+                  key={c.nome}
+                  className="flex h-24 items-center justify-center rounded-md bg-card p-4 shadow-sm"
+                >
+                  <img
+                    src={c.src}
+                    alt={`Logotipo ${c.nome}`}
+                    loading="lazy"
+                    className="max-h-16 w-auto max-w-full object-contain"
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       </main>
