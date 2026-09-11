@@ -1,30 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import logoPng from "@/assets/logo.png";
-import { getConfig, EMPRESA } from "@/lib/site-config";
-
-export const WHATSAPP =
-  `https://wa.me/${EMPRESA.whatsapp}?text=` +
-  encodeURIComponent(EMPRESA.mensagemWhatsapp);
-
-const SOCIAIS = [
-  { label: "Instagram", url: "https://www.instagram.com/eslempreendimentos" },
-  { label: "LinkedIn", url: "https://www.linkedin.com/company/esl-empreendimentos" },
-  { label: "Facebook", url: "https://www.facebook.com/eslempreendimentos" },
-];
+import { whatsappHref } from "@/lib/site-config";
+import { useSiteConfig } from "@/lib/use-site-config";
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const [config, setConfig] = useState(getConfig());
-
-  useEffect(() => {
-    const handleConfigChange = () => {
-      setConfig(getConfig());
-    };
-    window.addEventListener("siteConfigChanged", handleConfigChange);
-    return () => window.removeEventListener("siteConfigChanged", handleConfigChange);
-  }, []);
-
+  const config = useSiteConfig();
   const links = config.navbar.links;
+  const whatsapp = whatsappHref(config.contato);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
@@ -54,7 +37,7 @@ export function Header() {
 
         <div className="flex items-center gap-2">
           <a
-            href={WHATSAPP}
+            href={whatsapp}
             target="_blank"
             rel="noopener noreferrer"
             className="hidden rounded-md px-3 py-2 font-display text-xs font-bold text-background shadow-sm transition-colors hover:opacity-90 sm:inline-flex sm:px-4 sm:py-2.5 sm:text-sm"
@@ -89,7 +72,7 @@ export function Header() {
             </a>
           ))}
           <a
-            href={WHATSAPP}
+            href={whatsapp}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-4 block rounded-md px-4 py-3 text-center font-display text-sm font-bold text-background"
@@ -104,17 +87,9 @@ export function Header() {
 }
 
 export function Footer() {
-  const [config, setConfig] = useState(getConfig());
-
-  useEffect(() => {
-    const handleConfigChange = () => {
-      setConfig(getConfig());
-    };
-    window.addEventListener("siteConfigChanged", handleConfigChange);
-    return () => window.removeEventListener("siteConfigChanged", handleConfigChange);
-  }, []);
-
+  const config = useSiteConfig();
   const links = config.navbar.links;
+  const c = config.contato;
 
   return (
     <footer className="bg-carvao text-background" style={{ backgroundColor: config.colors.secondary }}>
@@ -129,11 +104,11 @@ export function Footer() {
             {config.texts.footerDescription}
           </p>
           <p className="mt-4 text-xs leading-relaxed text-background/60">
-            {EMPRESA.razaoSocial}
+            {c.razaoSocial}
             <br />
-            CNPJ {EMPRESA.cnpj}
+            CNPJ {c.cnpj}
             <br />
-            {EMPRESA.sede}
+            {c.sede}
           </p>
         </div>
 
@@ -157,12 +132,12 @@ export function Footer() {
             Contato
           </p>
           <ul className="mt-4 space-y-2 text-sm text-background/80">
-            <li>{EMPRESA.sede} · {EMPRESA.atuacao}</li>
-            <li>{EMPRESA.telefone}</li>
-            <li>{EMPRESA.email}</li>
+            <li>{c.sede} · {c.atuacao}</li>
+            <li>{c.telefone}</li>
+            <li>{c.email}</li>
           </ul>
           <div className="mt-4 flex flex-wrap gap-2 sm:gap-3">
-            {SOCIAIS.map((s) => (
+            {config.sociais.map((s) => (
               <a
                 key={s.label}
                 href={s.url}
@@ -187,9 +162,10 @@ export function Footer() {
 }
 
 export function WhatsAppFloat() {
+  const config = useSiteConfig();
   return (
     <a
-      href={WHATSAPP}
+      href={whatsappHref(config.contato)}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-4 right-4 z-50 rounded-full bg-floresta px-4 py-2.5 font-display text-xs font-bold text-background shadow-lg transition-colors hover:bg-terra sm:bottom-5 sm:right-5 sm:px-5 sm:py-3 sm:text-sm"
