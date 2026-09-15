@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Header, Footer, WhatsAppFloat, WHATSAPP } from "@/components/site";
-import { EMPRESA, themeVars } from "@/lib/site-config";
+import { Header, Footer, WhatsAppFloat } from "@/components/site";
+import { themeVars, whatsappHref } from "@/lib/site-config";
 import { useSiteConfig } from "@/lib/use-site-config";
 import heroCorporativo from "@/assets/corporativo-hero.jpg";
 import equipeCorporativa from "@/assets/equipe-corporativa.jpg";
@@ -8,21 +8,6 @@ import projeto1 from "@/assets/projeto-1.jpg";
 import projeto2 from "@/assets/projeto-2.jpg";
 import projeto3 from "@/assets/projeto-3.jpg";
 import projeto4 from "@/assets/projeto-4.jpg";
-import logoMg from "@/assets/mg.jpg.asset.json";
-import logoMercadoLivre from "@/assets/mercado-livre.jpg.asset.json";
-import logoSebrae from "@/assets/sebrae.jpg.asset.json";
-import logoFecitur from "@/assets/fecitur.jpg.asset.json";
-import logoCodemge from "@/assets/codemge.jpg.asset.json";
-import logoEquinox from "@/assets/equinox.jpg.asset.json";
-
-const CONTRATANTES: Array<{ nome: string; src: string }> = [
-  { nome: "Estado de Minas Gerais", src: logoMg.url },
-  { nome: "CODEMGE", src: logoCodemge.url },
-  { nome: "SEBRAE", src: logoSebrae.url },
-  { nome: "Mercado Livre", src: logoMercadoLivre.url },
-  { nome: "FECITUR", src: logoFecitur.url },
-  { nome: "Equinox Gold", src: logoEquinox.url },
-];
 
 const title =
   "E.S.L & Empreendimentos — Comunicação Institucional, Coordenação e Execução";
@@ -43,127 +28,6 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const credenciais = [
-  {
-    titulo: "Constituição regular",
-    texto: "Sociedade empresária limitada, com CNPJ ativo e atividades habilitadas.",
-  },
-  {
-    titulo: "Abrangência nacional",
-    texto: "Mobilização de equipes em todo o território nacional.",
-  },
-  {
-    titulo: "Equipe própria",
-    texto:
-      "Contratação, gestão e supervisão de pessoal sob responsabilidade da contratada.",
-  },
-  {
-    titulo: "Documentação regular",
-    texto: "Certidões e comprovantes de recolhimento disponíveis ao contratante.",
-  },
-];
-
-const areas = [
-  {
-    titulo: "Comunicação Institucional",
-    texto:
-      "Planejamento e estratégia de comunicação, identidade visual, produção de materiais institucionais e promocionais, gestão de canais digitais, conteúdo audiovisual e comunicação de projetos, programas e campanhas.",
-  },
-  {
-    titulo: "Coordenação e Gestão de Operações",
-    texto:
-      "Coordenação técnica de equipes e atividades, definição de fluxos e procedimentos, elaboração e acompanhamento de cronogramas, supervisão de execução e controle de escopo.",
-  },
-  {
-    titulo: "Execução de Projetos",
-    texto:
-      "Execução de projetos e programas previamente aprovados, compreendendo mobilização de equipe, cumprimento de cronograma, registro das atividades, elaboração de relatórios de execução e prestação de contas.",
-  },
-  {
-    titulo: "Serviços de Escritório e Relatórios Técnicos",
-    texto:
-      "Rotinas administrativas, organização e gestão documental, elaboração de documentos institucionais, produção de relatórios técnicos e gerenciais, tratamento de dados e secretaria executiva.",
-  },
-  {
-    titulo: "Fornecimento de Mão de Obra",
-    texto:
-      "Recrutamento, seleção, contratação, treinamento e alocação de profissionais nos perfis demandados, com administração de pessoal, encargos, escalas, substituições e supervisão sob responsabilidade da contratada.",
-  },
-  {
-    titulo: "Apoio Operacional e Eventos",
-    texto:
-      "Equipes de apoio operacional e logístico, serviços de alimentação, limpeza e conservação, e execução de eventos institucionais, incluindo estrutura e equipe.",
-  },
-];
-
-const modelos = [
-  {
-    titulo: "Serviço específico",
-    texto:
-      "Prestação delimitada, com objeto, prazo e produto definidos — a exemplo da produção de peça de comunicação, elaboração de relatório técnico, execução de documento institucional ou disponibilização de equipe para evento determinado.",
-  },
-  {
-    titulo: "Área de atuação",
-    texto:
-      "Responsabilidade continuada sobre uma frente de trabalho da organização, tais como a comunicação institucional, o apoio administrativo ou a operação de campo, com equipe dimensionada e supervisão permanente.",
-  },
-  {
-    titulo: "Operação integral",
-    texto:
-      "Coordenação e execução do conjunto das atividades contratadas, compreendendo equipe, execução, comunicação, documentação, monitoramento e prestação de contas, com relatórios periódicos ao contratante.",
-  },
-];
-
-const etapas = [
-  {
-    titulo: "Diagnóstico",
-    texto:
-      "Levantamento das necessidades, das rotinas existentes e da estrutura disponível, mediante visita técnica ou reunião de alinhamento.",
-  },
-  {
-    titulo: "Dimensionamento e proposta",
-    texto:
-      "Definição de escopo, quantitativo de profissionais, prazos, cronograma e condições, formalizados em proposta técnica e comercial.",
-  },
-  {
-    titulo: "Mobilização",
-    texto:
-      "Recrutamento, seleção, contratação e treinamento da equipe, com provisão da estrutura e dos materiais previstos no escopo.",
-  },
-  {
-    titulo: "Execução e supervisão",
-    texto:
-      "Realização das atividades sob coordenação responsável, com controle de escopo, apuração de indicadores e emissão de relatórios periódicos ao contratante.",
-  },
-];
-
-const contratantes = [
-  {
-    titulo: "Empresas privadas",
-    texto:
-      "Execução de projetos, equipes dedicadas, comunicação corporativa, relatórios gerenciais e apoio administrativo a operações de médio e grande porte.",
-  },
-  {
-    titulo: "Órgãos públicos e entidades de economia mista",
-    texto:
-      "Execução de projetos e programas, apoio operacional e administrativo, comunicação institucional, produção de relatórios técnicos e prestação de contas, observados os requisitos formais aplicáveis à contratação pública.",
-  },
-  {
-    titulo: "Associações, institutos e entidades representativas",
-    texto:
-      "Estruturação e execução de projetos, secretaria executiva, gestão documental, comunicação institucional e elaboração de relatórios a associados, conselhos e entidades parceiras.",
-  },
-];
-
-const conformidade = [
-  "Constituição regular e atividades habilitadas",
-  "Contratação de pessoal na forma da legislação vigente",
-  "Recolhimento dos encargos sociais e trabalhistas",
-  "Emissão de nota fiscal",
-  "Instrumento contratual com escopo, prazos e responsabilidades definidos",
-  "Certidões negativas disponíveis ao contratante",
-];
-
 /** Galeria mantida oculta até haver registro fotográfico próprio de contratos executados. */
 const MOSTRAR_PORTFOLIO = false;
 const portfolio = [
@@ -176,6 +40,10 @@ const portfolio = [
 function Index() {
   const config = useSiteConfig();
   const t = config.texts;
+  const c = config.contato;
+  const whatsapp = whatsappHref(c);
+  const clientes = config.blocos.clientes;
+  const clientesLoop = clientes.length ? [...clientes, ...clientes] : [];
 
   return (
     <div className="min-h-screen bg-background" style={themeVars(config.colors)}>
@@ -207,15 +75,15 @@ function Index() {
                 href="#areas"
                 className="rounded-md bg-floresta px-6 py-3 font-display text-xs font-bold text-background ring-1 ring-mostarda/50 transition-colors hover:bg-floresta-dark sm:px-7 sm:py-3.5 sm:text-sm"
               >
-                Áreas de atuação
+                {t.heroBotao1}
               </a>
               <a
-                href={WHATSAPP}
+                href={whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rounded-md bg-terra px-6 py-3 font-display text-xs font-bold text-background transition-colors hover:bg-terra-dark sm:px-7 sm:py-3.5 sm:text-sm"
               >
-                Solicitar proposta
+                {t.heroBotao2}
               </a>
             </div>
           </div>
@@ -226,32 +94,26 @@ function Index() {
           <div className="mx-auto grid max-w-6xl items-center gap-8 px-4 sm:gap-12 sm:px-5 md:grid-cols-2">
             <div>
               <p className="font-display text-[10px] font-bold uppercase tracking-[0.25em] text-terra sm:text-xs">
-                A Empresa
+                {t.aboutTag}
               </p>
               <h2 className="mt-3 text-2xl font-extrabold text-floresta sm:text-3xl md:text-4xl">
                 {t.aboutTitle}
               </h2>
-              <p className="mt-5 text-sm text-foreground/85 sm:text-base">
-                {t.aboutText}
-              </p>
+              <p className="mt-5 text-sm text-foreground/85 sm:text-base">{t.aboutText}</p>
               <p className="mt-4 text-sm text-foreground/85 sm:text-base">
                 {t.aboutTextSecondary}
               </p>
               <p className="mt-4 text-sm text-foreground/85 sm:text-base">
-                Todas as contratações são formalizadas mediante instrumento
-                contratual, com registro regular dos profissionais, recolhimento
-                dos encargos correspondentes e emissão de nota fiscal,
-                assegurando ao contratante a regularidade fiscal e trabalhista
-                da prestação.
+                {t.aboutTextTerciario}
               </p>
               <dl className="mt-8 grid gap-4 border-t border-mostarda pt-6 sm:grid-cols-2">
-                {credenciais.map((c) => (
-                  <div key={c.titulo}>
+                {config.blocos.credenciais.map((cred) => (
+                  <div key={cred.titulo}>
                     <dt className="font-display text-sm font-bold text-terra">
-                      {c.titulo}
+                      {cred.titulo}
                     </dt>
                     <dd className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                      {c.texto}
+                      {cred.texto}
                     </dd>
                   </div>
                 ))}
@@ -278,7 +140,7 @@ function Index() {
           <div className="mx-auto max-w-6xl px-4 sm:px-5">
             <div className="max-w-2xl">
               <p className="font-display text-[10px] font-bold uppercase tracking-[0.25em] text-terra sm:text-xs">
-                Áreas de Atuação
+                {t.areasTag}
               </p>
               <h2 className="mt-3 text-2xl font-extrabold text-floresta sm:text-3xl md:text-4xl">
                 {t.servicesTitle}
@@ -289,7 +151,7 @@ function Index() {
             </div>
 
             <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {areas.map((s, i) => (
+              {config.blocos.areas.map((s, i) => (
                 <article
                   key={s.titulo}
                   className="group rounded-md border border-mostarda bg-card p-5 transition-shadow hover:shadow-lg sm:p-7"
@@ -312,22 +174,17 @@ function Index() {
           <div className="mx-auto max-w-6xl px-4 sm:px-5">
             <div className="max-w-3xl">
               <p className="font-display text-[10px] font-bold uppercase tracking-[0.25em] text-terra sm:text-xs">
-                Modelos de Contratação
+                {t.modelosTag}
               </p>
               <h2 className="mt-3 text-2xl font-extrabold text-floresta sm:text-3xl md:text-4xl">
-                Escopo definido pelo contratante
+                {t.modelosTitle}
               </h2>
               <p className="mt-4 text-sm text-foreground/85 sm:text-base">
-                A contratação é dimensionada conforme a necessidade da
-                organização contratante, podendo abranger a prestação de um
-                serviço específico, a responsabilidade integral por uma área de
-                atuação ou a coordenação completa da operação. O escopo é
-                definido em instrumento contratual e admite ampliação, redução
-                ou adequação no curso da execução, mediante aditivo.
+                {t.modelosDescription}
               </p>
             </div>
             <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
-              {modelos.map((m) => (
+              {config.blocos.modelos.map((m) => (
                 <article
                   key={m.titulo}
                   className="rounded-md border-l-4 border-terra bg-card p-5 shadow-sm sm:p-7"
@@ -346,19 +203,17 @@ function Index() {
         <section id="metodologia" className="bg-floresta py-16 md:py-20 lg:py-28">
           <div className="mx-auto max-w-6xl px-4 sm:px-5">
             <p className="font-display text-[10px] font-bold uppercase tracking-[0.25em] text-mostarda sm:text-xs">
-              Metodologia
+              {t.metodologiaTag}
             </p>
             <h2 className="mt-3 text-2xl font-extrabold text-background sm:text-3xl md:text-4xl">
-              Etapas de execução
+              {t.metodologiaTitle}
             </h2>
             <p className="mt-4 max-w-3xl text-sm text-background/80 sm:text-base">
-              Cada contrato é precedido de diagnóstico e planejamento
-              específicos, dos quais decorrem o escopo, o dimensionamento da
-              equipe e os indicadores de acompanhamento.
+              {t.metodologiaDescription}
             </p>
 
             <ol className="mt-8 grid gap-4 sm:mt-12 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {etapas.map((e, i) => (
+              {config.blocos.etapas.map((e, i) => (
                 <li
                   key={e.titulo}
                   className="rounded-md border border-mostarda/40 bg-background/5 p-5 sm:p-6"
@@ -376,16 +231,9 @@ function Index() {
 
             <div className="mt-8 rounded-md border border-mostarda bg-background/10 p-5 sm:p-7">
               <h3 className="font-display text-base font-bold text-mostarda sm:text-lg">
-                Gestão inclusa
+                {t.gestaoTitle}
               </h3>
-              <p className="mt-2 text-xs text-background/85 sm:text-sm">
-                Cada contrato conta com coordenação responsável pela equipe, pelo
-                cumprimento do escopo e pela interlocução com o contratante, sem
-                custo adicional. Compreende supervisão das atividades, controle
-                de frequência e escalas, substituição e reposição de
-                profissionais sem interrupção do serviço e emissão de relatórios
-                periódicos.
-              </p>
+              <p className="mt-2 text-xs text-background/85 sm:text-sm">{t.gestaoTexto}</p>
             </div>
 
             {MOSTRAR_PORTFOLIO && (
@@ -398,10 +246,7 @@ function Index() {
                 </p>
                 <div className="mt-8 grid gap-4 sm:gap-6 sm:grid-cols-2">
                   {portfolio.map((p, i) => (
-                    <article
-                      key={i}
-                      className="group relative overflow-hidden rounded-md"
-                    >
+                    <article key={i} className="group relative overflow-hidden rounded-md">
                       <img
                         src={p.img}
                         alt={p.nome}
@@ -431,18 +276,18 @@ function Index() {
         <section className="bg-background py-16 md:py-20 lg:py-28">
           <div className="mx-auto max-w-6xl px-4 sm:px-5">
             <h2 className="text-2xl font-extrabold text-floresta sm:text-3xl md:text-4xl">
-              Organizações atendidas
+              {t.organizacoesTitle}
             </h2>
             <div className="mt-8 grid gap-4 sm:gap-6 md:grid-cols-3">
-              {contratantes.map((c) => (
+              {config.blocos.organizacoes.map((o) => (
                 <article
-                  key={c.titulo}
+                  key={o.titulo}
                   className="rounded-md border border-mostarda bg-card p-5 sm:p-7"
                 >
                   <h3 className="font-display text-base font-bold text-floresta sm:text-lg">
-                    {c.titulo}
+                    {o.titulo}
                   </h3>
-                  <p className="mt-2 text-xs text-foreground/80 sm:text-sm">{c.texto}</p>
+                  <p className="mt-2 text-xs text-foreground/80 sm:text-sm">{o.texto}</p>
                 </article>
               ))}
             </div>
@@ -454,24 +299,20 @@ function Index() {
           <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-5 md:grid-cols-2">
             <div>
               <h2 className="text-2xl font-extrabold text-floresta sm:text-3xl md:text-4xl">
-                Segurança jurídica ao contratante
+                {t.conformidadeTitle}
               </h2>
               <p className="mt-4 text-sm text-foreground/85 sm:text-base">
-                A contratação de serviços terceirizados implica responsabilidade
-                subsidiária do contratante quanto às obrigações trabalhistas. Em
-                razão disso, a E.S.L mantém integral regularidade documental,
-                disponibilizando ao contratante, sempre que solicitado, as
-                certidões e os comprovantes de recolhimento pertinentes.
+                {t.conformidadeTexto}
               </p>
             </div>
             <ul className="space-y-3">
-              {conformidade.map((c) => (
+              {config.blocos.conformidade.map((item) => (
                 <li
-                  key={c}
+                  key={item}
                   className="flex gap-3 rounded-md border border-mostarda bg-card p-4 text-xs text-foreground/85 sm:text-sm"
                 >
                   <span className="font-display font-bold text-terra">—</span>
-                  <span>{c}</span>
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
@@ -485,24 +326,22 @@ function Index() {
               <h2 className="text-2xl font-extrabold text-floresta sm:text-3xl md:text-4xl">
                 {t.contactTitle}
               </h2>
-              <p className="mt-4 text-sm text-carvao/85 sm:text-base">
-                {t.contactText}
-              </p>
+              <p className="mt-4 text-sm text-carvao/85 sm:text-base">{t.contactText}</p>
               <ul className="mt-6 space-y-2 font-display text-xs font-semibold text-floresta sm:mt-8 sm:space-y-3 sm:text-sm">
                 <li>
-                  {EMPRESA.sede} · {EMPRESA.atuacao}
+                  {c.sede} · {c.atuacao}
                 </li>
-                <li>{EMPRESA.telefone}</li>
-                <li>{EMPRESA.email}</li>
-                <li>{EMPRESA.horario}</li>
+                <li>{c.telefone}</li>
+                <li>{c.email}</li>
+                <li>{c.horario}</li>
               </ul>
               <a
-                href={WHATSAPP}
+                href={whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mt-6 inline-flex rounded-md border-2 border-floresta px-5 py-2.5 font-display text-xs font-bold text-floresta transition-colors hover:bg-floresta hover:text-background sm:mt-8 sm:px-6 sm:py-3 sm:text-sm"
               >
-                Solicitar proposta pelo WhatsApp
+                {t.contactBotaoWhatsapp}
               </a>
             </div>
 
@@ -512,7 +351,7 @@ function Index() {
                 e.preventDefault();
                 const f = new FormData(e.currentTarget);
                 const msg = [
-                  "Prezados, solicito contato para apresentação de proposta.",
+                  c.mensagemWhatsapp,
                   `Nome: ${f.get("nome")}`,
                   `Organização: ${f.get("organizacao")}`,
                   `Cargo: ${f.get("cargo")}`,
@@ -520,11 +359,7 @@ function Index() {
                   `Telefone: ${f.get("telefone")}`,
                   `Objeto da solicitação: ${f.get("objeto")}`,
                 ].join("\n");
-                window.open(
-                  `https://wa.me/${EMPRESA.whatsapp}?text=${encodeURIComponent(msg)}`,
-                  "_blank",
-                  "noopener",
-                );
+                window.open(whatsappHref(c, msg), "_blank", "noopener");
               }}
             >
               {[
@@ -560,32 +395,36 @@ function Index() {
                 type="submit"
                 className="mt-5 w-full rounded-md bg-terra px-5 py-2.5 font-display text-xs font-bold text-background transition-colors hover:bg-terra-dark sm:mt-6 sm:px-6 sm:py-3 sm:text-sm"
               >
-                Enviar solicitação
+                {t.contactBotaoFormulario}
               </button>
             </form>
           </div>
 
-          {/* EMPRESAS CONTRATANTES */}
-          <div className="mx-auto mt-14 max-w-6xl px-4 sm:px-5 md:mt-20">
-            <h3 className="text-center font-display text-lg font-extrabold text-floresta sm:text-2xl">
-              Empresas que já nos contrataram
-            </h3>
-            <div className="mt-8 grid grid-cols-2 items-center gap-6 sm:grid-cols-3 md:grid-cols-6 md:gap-8">
-              {CONTRATANTES.map((c) => (
-                <div
-                  key={c.nome}
-                  className="flex h-24 items-center justify-center rounded-md bg-card p-4 shadow-sm"
-                >
-                  <img
-                    src={c.src}
-                    alt={`Logotipo ${c.nome}`}
-                    loading="lazy"
-                    className="max-h-16 w-auto max-w-full object-contain"
-                  />
+          {/* EMPRESAS CONTRATANTES — carrossel contínuo */}
+          {clientes.length > 0 && (
+            <div className="mt-14 md:mt-20">
+              <h3 className="text-center font-display text-lg font-extrabold text-floresta sm:text-2xl">
+                {t.clientesTitle}
+              </h3>
+              <div className="logo-marquee mt-8">
+                <div className="logo-marquee-track">
+                  {clientesLoop.map((cliente, i) => (
+                    <div
+                      key={`${cliente.nome}-${i}`}
+                      className="flex h-24 w-40 shrink-0 items-center justify-center px-4 sm:w-52"
+                    >
+                      <img
+                        src={cliente.src}
+                        alt={`Logotipo ${cliente.nome}`}
+                        loading="lazy"
+                        className="max-h-16 w-auto max-w-full object-contain"
+                      />
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
+          )}
         </section>
       </main>
       <Footer />
