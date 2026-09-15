@@ -15,6 +15,7 @@ import { Route as AdminClientesRouteImport } from './routes/admin.clientes'
 import { Route as AdminFinanceiroRouteImport } from './routes/admin.financeiro'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminProjetosRouteImport } from './routes/admin.projetos'
+import { Route as AdminAuthConteudoRouteImport } from './routes/admin._auth/conteudo'
 import { Route as AdminAuthCoresTextosRouteImport } from './routes/admin._auth/cores-textos'
 import { Route as AdminAuthDashboardRouteImport } from './routes/admin._auth/dashboard'
 import { Route as AdminAuthLogoNavbarRouteImport } from './routes/admin._auth/logo-navbar'
@@ -49,6 +50,11 @@ const AdminProjetosRoute = AdminProjetosRouteImport.update({
   path: '/admin/projetos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAuthConteudoRoute = AdminAuthConteudoRouteImport.update({
+  id: '/admin/_auth/conteudo',
+  path: '/admin/conteudo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAuthCoresTextosRoute = AdminAuthCoresTextosRouteImport.update({
   id: '/admin/_auth/cores-textos',
   path: '/admin/cores-textos',
@@ -72,6 +78,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/projetos': typeof AdminProjetosRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/conteudo': typeof AdminAuthConteudoRoute
   '/admin/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/dashboard': typeof AdminAuthDashboardRoute
   '/admin/logo-navbar': typeof AdminAuthLogoNavbarRoute
@@ -83,6 +90,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/projetos': typeof AdminProjetosRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/conteudo': typeof AdminAuthConteudoRoute
   '/admin/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/dashboard': typeof AdminAuthDashboardRoute
   '/admin/logo-navbar': typeof AdminAuthLogoNavbarRoute
@@ -95,6 +103,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/projetos': typeof AdminProjetosRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/_auth/conteudo': typeof AdminAuthConteudoRoute
   '/admin/_auth/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/_auth/dashboard': typeof AdminAuthDashboardRoute
   '/admin/_auth/logo-navbar': typeof AdminAuthLogoNavbarRoute
@@ -108,6 +117,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/projetos'
     | '/admin/'
+    | '/admin/conteudo'
     | '/admin/cores-textos'
     | '/admin/dashboard'
     | '/admin/logo-navbar'
@@ -119,6 +129,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/projetos'
     | '/admin'
+    | '/admin/conteudo'
     | '/admin/cores-textos'
     | '/admin/dashboard'
     | '/admin/logo-navbar'
@@ -130,6 +141,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/projetos'
     | '/admin/'
+    | '/admin/_auth/conteudo'
     | '/admin/_auth/cores-textos'
     | '/admin/_auth/dashboard'
     | '/admin/_auth/logo-navbar'
@@ -142,6 +154,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminProjetosRoute: typeof AdminProjetosRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminAuthConteudoRoute: typeof AdminAuthConteudoRoute
   AdminAuthCoresTextosRoute: typeof AdminAuthCoresTextosRoute
   AdminAuthDashboardRoute: typeof AdminAuthDashboardRoute
   AdminAuthLogoNavbarRoute: typeof AdminAuthLogoNavbarRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProjetosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/_auth/conteudo': {
+      id: '/admin/_auth/conteudo'
+      path: '/admin/conteudo'
+      fullPath: '/admin/conteudo'
+      preLoaderRoute: typeof AdminAuthConteudoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/_auth/cores-textos': {
       id: '/admin/_auth/cores-textos'
       path: '/admin/cores-textos'
@@ -222,6 +242,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminProjetosRoute: AdminProjetosRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminAuthConteudoRoute: AdminAuthConteudoRoute,
   AdminAuthCoresTextosRoute: AdminAuthCoresTextosRoute,
   AdminAuthDashboardRoute: AdminAuthDashboardRoute,
   AdminAuthLogoNavbarRoute: AdminAuthLogoNavbarRoute,
