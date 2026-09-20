@@ -15,6 +15,7 @@ import { Route as AdminClientesRouteImport } from './routes/admin.clientes'
 import { Route as AdminFinanceiroRouteImport } from './routes/admin.financeiro'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminProjetosRouteImport } from './routes/admin.projetos'
+import { Route as AdminAuthContatosRouteImport } from './routes/admin._auth/contatos'
 import { Route as AdminAuthConteudoRouteImport } from './routes/admin._auth/conteudo'
 import { Route as AdminAuthCoresTextosRouteImport } from './routes/admin._auth/cores-textos'
 import { Route as AdminAuthDashboardRouteImport } from './routes/admin._auth/dashboard'
@@ -50,6 +51,11 @@ const AdminProjetosRoute = AdminProjetosRouteImport.update({
   path: '/admin/projetos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminAuthContatosRoute = AdminAuthContatosRouteImport.update({
+  id: '/admin/_auth/contatos',
+  path: '/admin/contatos',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAuthConteudoRoute = AdminAuthConteudoRouteImport.update({
   id: '/admin/_auth/conteudo',
   path: '/admin/conteudo',
@@ -78,6 +84,7 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/projetos': typeof AdminProjetosRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/contatos': typeof AdminAuthContatosRoute
   '/admin/conteudo': typeof AdminAuthConteudoRoute
   '/admin/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/dashboard': typeof AdminAuthDashboardRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/projetos': typeof AdminProjetosRoute
   '/admin': typeof AdminIndexRoute
+  '/admin/contatos': typeof AdminAuthContatosRoute
   '/admin/conteudo': typeof AdminAuthConteudoRoute
   '/admin/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/dashboard': typeof AdminAuthDashboardRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/projetos': typeof AdminProjetosRoute
   '/admin/': typeof AdminIndexRoute
+  '/admin/_auth/contatos': typeof AdminAuthContatosRoute
   '/admin/_auth/conteudo': typeof AdminAuthConteudoRoute
   '/admin/_auth/cores-textos': typeof AdminAuthCoresTextosRoute
   '/admin/_auth/dashboard': typeof AdminAuthDashboardRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/projetos'
     | '/admin/'
+    | '/admin/contatos'
     | '/admin/conteudo'
     | '/admin/cores-textos'
     | '/admin/dashboard'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/projetos'
     | '/admin'
+    | '/admin/contatos'
     | '/admin/conteudo'
     | '/admin/cores-textos'
     | '/admin/dashboard'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/projetos'
     | '/admin/'
+    | '/admin/_auth/contatos'
     | '/admin/_auth/conteudo'
     | '/admin/_auth/cores-textos'
     | '/admin/_auth/dashboard'
@@ -154,6 +166,7 @@ export interface RootRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminProjetosRoute: typeof AdminProjetosRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminAuthContatosRoute: typeof AdminAuthContatosRoute
   AdminAuthConteudoRoute: typeof AdminAuthConteudoRoute
   AdminAuthCoresTextosRoute: typeof AdminAuthCoresTextosRoute
   AdminAuthDashboardRoute: typeof AdminAuthDashboardRoute
@@ -204,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProjetosRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/_auth/contatos': {
+      id: '/admin/_auth/contatos'
+      path: '/admin/contatos'
+      fullPath: '/admin/contatos'
+      preLoaderRoute: typeof AdminAuthContatosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/_auth/conteudo': {
       id: '/admin/_auth/conteudo'
       path: '/admin/conteudo'
@@ -242,6 +262,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminProjetosRoute: AdminProjetosRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminAuthContatosRoute: AdminAuthContatosRoute,
   AdminAuthConteudoRoute: AdminAuthConteudoRoute,
   AdminAuthCoresTextosRoute: AdminAuthCoresTextosRoute,
   AdminAuthDashboardRoute: AdminAuthDashboardRoute,
