@@ -140,7 +140,7 @@ function TextArea({
   label: string;
   value: string;
   onChange: (value: string) => void;
-  rows?: number;
+  rows?: number | undefined;
 }) {
   return (
     <div>
