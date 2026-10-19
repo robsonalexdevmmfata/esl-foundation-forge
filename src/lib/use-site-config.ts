@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { getConfig, type SiteConfig } from "@/lib/site-config";
+import { defaultConfig, getConfig, type SiteConfig } from "@/lib/site-config";
 
 export function useSiteConfig(): SiteConfig {
-  const [config, setConfig] = useState<SiteConfig>(() => getConfig());
+  // Start with defaults so server and first client render match; saved config loads in useEffect.
+  const [config, setConfig] = useState<SiteConfig>(defaultConfig);
 
   useEffect(() => {
     const sync = () => setConfig(getConfig());
