@@ -55,7 +55,15 @@ function FinanceiroPage() {
     linhas.push(["PROJETOS"]);
     linhas.push(["Projeto", "Cliente", "Valor", "Status", "Progresso", "Início", "Prazo"]);
     data.projetos.forEach((p) =>
-      linhas.push([p.nome, p.cliente, String(p.valor), p.status, `${p.progresso}%`, p.inicio, p.prazo]),
+      linhas.push([
+        p.nome,
+        p.cliente,
+        String(p.valor),
+        p.status,
+        `${p.progresso}%`,
+        p.inicio,
+        p.prazo,
+      ]),
     );
     linhas.push([]);
     linhas.push(["EVOLUÇÃO MENSAL"]);
@@ -69,7 +77,9 @@ function FinanceiroPage() {
   const stamp = new Date().toISOString().slice(0, 10);
 
   const exportCsv = () => {
-    const csv = rows().map((r) => r.map(esc).join(";")).join("\n");
+    const csv = rows()
+      .map((r) => r.map(esc).join(";"))
+      .join("\n");
     download(`relatorio-financeiro-${stamp}.csv`, csv, "text/csv");
     setMenuOpen(false);
   };
@@ -99,7 +109,9 @@ function FinanceiroPage() {
       <div className="rounded-[24px] border border-slate-200 bg-white p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">Financeiro</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">
+              Financeiro
+            </p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900">Receita e desempenho</h1>
             <p className="mt-1 text-sm text-slate-500">
               Dados apurados de {m.totalClientes} clientes e {m.totalProjetos} projetos cadastrados.
@@ -116,9 +128,27 @@ function FinanceiroPage() {
 
             {menuOpen && (
               <div className="absolute right-0 z-20 mt-2 w-52 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl">
-                <button type="button" onClick={exportXls} className="block w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50">Excel (.xls)</button>
-                <button type="button" onClick={exportCsv} className="block w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50">Planilha (.csv)</button>
-                <button type="button" onClick={exportJson} className="block w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50">Dados completos (.json)</button>
+                <button
+                  type="button"
+                  onClick={exportXls}
+                  className="block w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  Excel (.xls)
+                </button>
+                <button
+                  type="button"
+                  onClick={exportCsv}
+                  className="block w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  Planilha (.csv)
+                </button>
+                <button
+                  type="button"
+                  onClick={exportJson}
+                  className="block w-full px-4 py-3 text-left text-sm text-slate-700 hover:bg-slate-50"
+                >
+                  Dados completos (.json)
+                </button>
               </div>
             )}
           </div>
@@ -128,11 +158,22 @@ function FinanceiroPage() {
       <div className="grid gap-5 md:grid-cols-4">
         {[
           { label: "Carteira total", value: brl(m.carteira), hint: `${m.totalProjetos} projetos` },
-          { label: "Receita realizada", value: brl(m.receitaRealizada), hint: `${m.progressoMedio}% de progresso médio` },
+          {
+            label: "Receita realizada",
+            value: brl(m.receitaRealizada),
+            hint: `${m.progressoMedio}% de progresso médio`,
+          },
           { label: "Ticket médio", value: brl(m.ticketMedio), hint: `${m.totalClientes} clientes` },
-          { label: "Projetos concluídos", value: String(m.projetosConcluidos), hint: `${m.projetosExecucao} em execução` },
+          {
+            label: "Projetos concluídos",
+            value: String(m.projetosConcluidos),
+            hint: `${m.projetosExecucao} em execução`,
+          },
         ].map((card) => (
-          <div key={card.label} className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
+          <div
+            key={card.label}
+            className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm"
+          >
             <p className="text-sm text-slate-500">{card.label}</p>
             <p className="mt-3 text-2xl font-bold text-slate-900">{card.value}</p>
             <p className="mt-2 text-sm text-emerald-600">{card.hint}</p>
@@ -142,7 +183,9 @@ function FinanceiroPage() {
 
       <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
         <h2 className="mb-5 text-lg font-semibold text-slate-800">Receita iniciada por mês</h2>
-        {m.porMes.length === 0 && <p className="text-sm text-slate-500">Sem dados cadastrados ainda.</p>}
+        {m.porMes.length === 0 && (
+          <p className="text-sm text-slate-500">Sem dados cadastrados ainda.</p>
+        )}
         <div className="space-y-4">
           {m.porMes.map((item) => (
             <div key={item.name}>

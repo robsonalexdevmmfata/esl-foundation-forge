@@ -79,8 +79,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
-        title:
-          "E.S.L & Empreendimentos — Comunicação Institucional, Coordenação e Execução",
+        title: "E.S.L & Empreendimentos — Comunicação Institucional, Coordenação e Execução",
       },
       {
         name: "description",

@@ -101,8 +101,7 @@ export const defaultContent: SiteContent = {
     logoUrl: logo.url,
     logoAltura: 44,
     whatsapp: "5511999999999",
-    mensagemWhatsapp:
-      "Olá, ESL FACILITY! Gostaria de solicitar um orçamento para o meu projeto.",
+    mensagemWhatsapp: "Olá, ESL FACILITY! Gostaria de solicitar um orçamento para o meu projeto.",
     seoTitulo: "ESL Facility — Construção Civil, Engenharia e Facilities",
     seoDescricao:
       "Construtora especializada em obras residenciais, comerciais e industriais: gestão de projetos, retrofit e manutenção predial com excelência e sustentabilidade.",
@@ -132,8 +131,7 @@ export const defaultContent: SiteContent = {
   hero: {
     ativo: true,
     badge: "Engenharia & Construção",
-    titulo:
-      "ESL FACILITY: Construindo o Futuro com Excelência e Sustentabilidade.",
+    titulo: "ESL FACILITY: Construindo o Futuro com Excelência e Sustentabilidade.",
     subtitulo:
       "Soluções completas em engenharia e construção civil para projetos residenciais, comerciais e industriais.",
     ctaPrimario: "Saiba Mais",
@@ -205,8 +203,7 @@ export const defaultContent: SiteContent = {
     itens: [
       {
         nome: "Residencial Jardim Verde",
-        resumo:
-          "Edifício de 48 unidades com reuso de água e áreas verdes integradas.",
+        resumo: "Edifício de 48 unidades com reuso de água e áreas verdes integradas.",
         imagem: projeto1,
       },
       {

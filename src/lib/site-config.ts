@@ -93,8 +93,7 @@ export const EMPRESA = {
   sede: "Serranópolis de Minas – MG",
   atuacao: "Atuação em todo o território nacional",
   horario: "Atendimento de segunda a sexta-feira, das 8h às 18h",
-  mensagemWhatsapp:
-    "Prezados, solicito contato para apresentação de proposta.",
+  mensagemWhatsapp: "Prezados, solicito contato para apresentação de proposta.",
 };
 
 export const defaultConfig: SiteConfig = {
@@ -147,8 +146,7 @@ export const defaultConfig: SiteConfig = {
     contactBotaoFormulario: "Enviar solicitação",
     footerDescription:
       "Serviços corporativos e institucionais em comunicação, coordenação e execução, com equipe própria e gestão inclusa.",
-    footerCopyright:
-      "© 2026 E.S.L & Empreendimentos LTDA. Todos os direitos reservados.",
+    footerCopyright: "© 2026 E.S.L & Empreendimentos LTDA. Todos os direitos reservados.",
     servicesTitle: "Serviços prestados",
     servicesDescription:
       "A empresa atua de forma integrada ou segmentada, conforme o escopo definido pelo contratante.",
@@ -176,8 +174,7 @@ export const defaultConfig: SiteConfig = {
     credenciais: [
       {
         titulo: "Constituição regular",
-        texto:
-          "Sociedade empresária limitada, com CNPJ ativo e atividades habilitadas.",
+        texto: "Sociedade empresária limitada, com CNPJ ativo e atividades habilitadas.",
       },
       {
         titulo: "Abrangência nacional",
@@ -185,13 +182,11 @@ export const defaultConfig: SiteConfig = {
       },
       {
         titulo: "Equipe própria",
-        texto:
-          "Contratação, gestão e supervisão de pessoal sob responsabilidade da contratada.",
+        texto: "Contratação, gestão e supervisão de pessoal sob responsabilidade da contratada.",
       },
       {
         titulo: "Documentação regular",
-        texto:
-          "Certidões e comprovantes de recolhimento disponíveis ao contratante.",
+        texto: "Certidões e comprovantes de recolhimento disponíveis ao contratante.",
       },
     ],
     areas: [
@@ -369,14 +364,9 @@ export function themeVars(colors: SiteConfig["colors"]): Record<string, string> 
 }
 
 /** Link do WhatsApp montado a partir dos dados de contato salvos no painel. */
-export function whatsappHref(
-  contato: SiteConfig["contato"],
-  mensagem?: string,
-): string {
+export function whatsappHref(contato: SiteConfig["contato"], mensagem?: string): string {
   const numero = (contato.whatsapp || "").replace(/\D/g, "");
-  return `https://wa.me/${numero}?text=${encodeURIComponent(
-    mensagem ?? contato.mensagemWhatsapp,
-  )}`;
+  return `https://wa.me/${numero}?text=${encodeURIComponent(mensagem ?? contato.mensagemWhatsapp)}`;
 }
 
 /** true quando o valor é um arquivo enviado por upload (data URL). */

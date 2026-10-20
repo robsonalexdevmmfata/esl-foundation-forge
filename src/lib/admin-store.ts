@@ -34,16 +34,88 @@ const hoje = () => new Date().toISOString().slice(0, 10);
 
 export const defaultAdminData: AdminData = {
   clientes: [
-    { id: "c1", nome: "Casa Vista", whatsapp: "5511988880001", email: "contato@casavista.com.br", setor: "Residencial", valor: 180000, status: "Fechado", data: "2026-08-18" },
-    { id: "c2", nome: "Prime Center", whatsapp: "5511988880002", email: "obras@primecenter.com.br", setor: "Comercial", valor: 420000, status: "Em execução", data: "2026-08-10" },
-    { id: "c3", nome: "Loja Leste", whatsapp: "5511988880003", email: "adm@lojaleste.com.br", setor: "Comercial", valor: 95000, status: "Em negociação", data: "2026-08-05" },
-    { id: "c4", nome: "Residencial Sun", whatsapp: "5511988880004", email: "sun@residencial.com.br", setor: "Residencial", valor: 260000, status: "Fechado", data: "2026-08-02" },
+    {
+      id: "c1",
+      nome: "Casa Vista",
+      whatsapp: "5511988880001",
+      email: "contato@casavista.com.br",
+      setor: "Residencial",
+      valor: 180000,
+      status: "Fechado",
+      data: "2026-08-18",
+    },
+    {
+      id: "c2",
+      nome: "Prime Center",
+      whatsapp: "5511988880002",
+      email: "obras@primecenter.com.br",
+      setor: "Comercial",
+      valor: 420000,
+      status: "Em execução",
+      data: "2026-08-10",
+    },
+    {
+      id: "c3",
+      nome: "Loja Leste",
+      whatsapp: "5511988880003",
+      email: "adm@lojaleste.com.br",
+      setor: "Comercial",
+      valor: 95000,
+      status: "Em negociação",
+      data: "2026-08-05",
+    },
+    {
+      id: "c4",
+      nome: "Residencial Sun",
+      whatsapp: "5511988880004",
+      email: "sun@residencial.com.br",
+      setor: "Residencial",
+      valor: 260000,
+      status: "Fechado",
+      data: "2026-08-02",
+    },
   ],
   projetos: [
-    { id: "p1", nome: "Residencial Jardins", cliente: "Casa Vista", valor: 180000, status: "Fechado", progresso: 92, inicio: "2026-03-02", prazo: "2026-09-15" },
-    { id: "p2", nome: "Prime Center", cliente: "Prime Center", valor: 420000, status: "Em execução", progresso: 68, inicio: "2026-04-10", prazo: "2026-10-20" },
-    { id: "p3", nome: "Loja Leste", cliente: "Leste Group", valor: 95000, status: "Aguardando aprovação", progresso: 42, inicio: "2026-05-06", prazo: "2026-08-30" },
-    { id: "p4", nome: "Sun Houses", cliente: "Residencial Sun", valor: 260000, status: "Fechado", progresso: 100, inicio: "2026-01-15", prazo: "2026-07-28" },
+    {
+      id: "p1",
+      nome: "Residencial Jardins",
+      cliente: "Casa Vista",
+      valor: 180000,
+      status: "Fechado",
+      progresso: 92,
+      inicio: "2026-03-02",
+      prazo: "2026-09-15",
+    },
+    {
+      id: "p2",
+      nome: "Prime Center",
+      cliente: "Prime Center",
+      valor: 420000,
+      status: "Em execução",
+      progresso: 68,
+      inicio: "2026-04-10",
+      prazo: "2026-10-20",
+    },
+    {
+      id: "p3",
+      nome: "Loja Leste",
+      cliente: "Leste Group",
+      valor: 95000,
+      status: "Aguardando aprovação",
+      progresso: 42,
+      inicio: "2026-05-06",
+      prazo: "2026-08-30",
+    },
+    {
+      id: "p4",
+      nome: "Sun Houses",
+      cliente: "Residencial Sun",
+      valor: 260000,
+      status: "Fechado",
+      progresso: 100,
+      inicio: "2026-01-15",
+      prazo: "2026-07-28",
+    },
   ],
 };
 
@@ -155,7 +227,9 @@ export function computeMetrics(data: AdminData): Metrics {
   );
 
   const setorMap = new Map<string, number>();
-  clientes.forEach((c) => setorMap.set(c.setor || "Outros", (setorMap.get(c.setor || "Outros") ?? 0) + 1));
+  clientes.forEach((c) =>
+    setorMap.set(c.setor || "Outros", (setorMap.get(c.setor || "Outros") ?? 0) + 1),
+  );
 
   const statusMap = new Map<string, number>();
   projetos.forEach((p) => statusMap.set(p.status, (statusMap.get(p.status) ?? 0) + 1));

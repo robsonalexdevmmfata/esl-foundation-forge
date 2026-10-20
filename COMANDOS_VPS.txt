@@ -1,0 +1,162 @@
+═══════════════════════════════════════════════════════════════
+  COMANDOS PARA EXECUTAR NA VPS (via SSH no FileZilla)
+═══════════════════════════════════════════════════════════════
+
+✅ SUPABASE/LOVABLE REMOVIDO - USA APENAS POSTGRESQL LOCAL
+
+1. FAZER UPLOAD DOS ARQUIVOS
+────────────────────────────────────────────────────────────────
+Via FileZilla, faça upload destes arquivos/pastas para a VPS:
+
+✅ .env (APENAS COM DATABASE_URL E ADMIN_SESSION_SECRET)
+✅ dist/ (TODO O DIRETÓRIO - BUILD COMPLETO)
+✅ src/lib/db.ts (NOVO)
+✅ src/lib/admin-auth.functions.ts (MODIFICADO)
+✅ src/integrations/supabase/client.ts (MODIFICADO - não trava mais)
+✅ src/integrations/supabase/client.server.ts (MODIFICADO)
+✅ src/integrations/supabase/auth-middleware.ts (MODIFICADO)
+✅ scripts/run-migration.mjs (NOVO)
+✅ scripts/manage-admin-user.mjs (NOVO)
+✅ supabase/migrations/20261020000001_create_admin_users.sql (NOVO)
+✅ package.json (MODIFICADO - tem novos scripts)
+✅ package-lock.json (MODIFICADO - tem bcrypt e pg)
+
+
+2. CONECTAR VIA SSH (Terminal do FileZilla)
+────────────────────────────────────────────────────────────────
+No FileZilla: Server > Enter Custom Command
+Ou abra um terminal SSH separado
+
+
+3. COMANDOS PARA EXECUTAR (COPIE E COLE UM POR VEZ)
+────────────────────────────────────────────────────────────────
+
+# Ir para o diretório do projeto
+cd /var/www/esl-foundation-forge
+# (ou o caminho onde está o projeto)
+
+# Instalar novas dependências (bcrypt e pg)
+npm install
+
+# Testar conexão com banco de dados
+npm run db:test
+
+# Se der erro de conexão, ajuste a senha no .env:
+nano .env
+# Edite a linha DATABASE_URL com a senha correta
+# Ctrl+O para salvar, Enter, Ctrl+X para sair
+
+# Executar migração (criar tabela admin_users)
+npm run db:migrate
+
+# Fazer build do projeto
+npm run build
+
+# Reiniciar PM2
+pm2 restart esl-foundation-forge
+
+# Ver logs para conferir se deu certo
+pm2 logs esl-foundation-forge --lines 50
+
+
+4. TESTAR NO NAVEGADOR
+────────────────────────────────────────────────────────────────
+https://eslveccia.com.br/admin/login
+
+Usuário: gestaoesl
+Senha: Serras123@
+
+
+5. SE DER ERRO, VERIFICAR
+────────────────────────────────────────────────────────────────
+
+# Ver logs em tempo real
+pm2 logs esl-foundation-forge
+
+# Verificar status do PM2
+pm2 status
+
+# Verificar se a tabela foi criada
+psql -h 127.0.0.1 -U esl -d esl -c "SELECT * FROM admin_users;"
+
+# Se pedir senha do PostgreSQL, é: 320809
+
+# Listar usuários cadastrados
+npm run admin:manage
+# Escolha opção 3 (List all admin users)
+
+
+6. SE A MIGRAÇÃO NÃO CRIOU O USUÁRIO
+────────────────────────────────────────────────────────────────
+npm run admin:manage
+# Escolha opção 1 (Create new admin user)
+# Username: gestaoesl
+# Password: Serras123@
+# Role: admin
+
+
+7. VERIFICAR SE O .ENV ESTÁ CORRETO
+────────────────────────────────────────────────────────────────
+cat .env
+
+Deve ter APENAS (Supabase é OPCIONAL):
+DATABASE_URL=postgresql://esl:320809@127.0.0.1:5432/esl
+ADMIN_SESSION_SECRET=8e5f7ca0f06fcb2bce4b4373b264d29b4340b13f79dc98ab051831f88d2d101b
+
+# Supabase (OPCIONAL - não usado para auth admin)
+# Pode ter ou não ter, não vai dar erro
+
+
+═══════════════════════════════════════════════════════════════
+  RESUMO DOS COMANDOS (ORDEM CORRETA)
+═══════════════════════════════════════════════════════════════
+
+cd /var/www/esl-foundation-forge
+npm install
+npm run db:migrate
+pm2 restart esl-foundation-forge
+pm2 logs esl-foundation-forge
+
+
+═══════════════════════════════════════════════════════════════
+  ERROS COMUNS E SOLUÇÕES
+═══════════════════════════════════════════════════════════════
+
+❌ "DATABASE_URL is not configured"
+→ Arquivo .env não foi enviado ou não tem a variável
+→ Solução: Enviar .env via FileZilla
+
+❌ "password authentication failed"
+→ Senha do PostgreSQL está errada no .env
+→ Solução: Editar .env com senha correta (320809)
+
+❌ "relation admin_users does not exist"
+→ Migração não foi executada
+→ Solução: npm run db:migrate
+
+❌ "Usuário ou senha inválidos" no login
+→ Usuário admin não foi criado no banco
+→ Solução: npm run admin:manage (opção 1)
+
+❌ PM2 não reinicia
+→ Usar: pm2 delete esl-foundation-forge
+→ Depois: pm2 start dist/server/index.mjs --name esl-foundation-forge
+
+
+═══════════════════════════════════════════════════════════════
+  CREDENCIAIS DO SISTEMA
+═══════════════════════════════════════════════════════════════
+
+PostgreSQL:
+  Usuário: esl
+  Senha: 320809
+  Banco: esl
+  Host: 127.0.0.1
+  Porta: 5432
+
+Login Admin:
+  Usuário: gestaoesl
+  Senha: Serras123@
+
+
+═══════════════════════════════════════════════════════════════

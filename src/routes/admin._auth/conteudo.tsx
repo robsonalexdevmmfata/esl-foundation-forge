@@ -1,12 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AdminLayout } from "@/components/admin-layout";
-import {
-  getConfig,
-  saveConfig,
-  type ItemTexto,
-  type SiteConfig,
-} from "@/lib/site-config";
+import { getConfig, saveConfig, type ItemTexto, type SiteConfig } from "@/lib/site-config";
 
 export const Route = createFileRoute("/admin/_auth/conteudo")({
   component: () => (
@@ -100,9 +95,7 @@ function ConteudoEditor() {
                 <p className="text-xs text-slate-500">{secao.ajuda}</p>
               </div>
               <button
-                onClick={() =>
-                  setLista(secao.key, [...lista, { titulo: "Novo item", texto: "" }])
-                }
+                onClick={() => setLista(secao.key, [...lista, { titulo: "Novo item", texto: "" }])}
                 className="rounded-lg border border-slate-300 px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50"
               >
                 + Adicionar item
@@ -302,9 +295,7 @@ function ConteudoEditor() {
                           blocos: {
                             ...config.blocos,
                             clientes: config.blocos.clientes.map((it, idx) =>
-                              idx === i
-                                ? { ...it, src: String(reader.result), nome: it.nome }
-                                : it,
+                              idx === i ? { ...it, src: String(reader.result), nome: it.nome } : it,
                             ),
                           },
                         });

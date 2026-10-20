@@ -9,8 +9,7 @@ import projeto2 from "@/assets/projeto-2.jpg";
 import projeto3 from "@/assets/projeto-3.jpg";
 import projeto4 from "@/assets/projeto-4.jpg";
 
-const title =
-  "E.S.L & Empreendimentos — Comunicação Institucional, Coordenação e Execução";
+const title = "E.S.L & Empreendimentos — Comunicação Institucional, Coordenação e Execução";
 const description =
   "Serviços corporativos e institucionais em comunicação, coordenação e execução de projetos e operações, com equipe própria e contratos formais, para empresas, órgãos públicos e associações em todo o território nacional.";
 
@@ -100,21 +99,13 @@ function Index() {
                 {t.aboutTitle}
               </h2>
               <p className="mt-5 text-sm text-foreground/85 sm:text-base">{t.aboutText}</p>
-              <p className="mt-4 text-sm text-foreground/85 sm:text-base">
-                {t.aboutTextSecondary}
-              </p>
-              <p className="mt-4 text-sm text-foreground/85 sm:text-base">
-                {t.aboutTextTerciario}
-              </p>
+              <p className="mt-4 text-sm text-foreground/85 sm:text-base">{t.aboutTextSecondary}</p>
+              <p className="mt-4 text-sm text-foreground/85 sm:text-base">{t.aboutTextTerciario}</p>
               <dl className="mt-8 grid gap-4 border-t border-mostarda pt-6 sm:grid-cols-2">
                 {config.blocos.credenciais.map((cred) => (
                   <div key={cred.titulo}>
-                    <dt className="font-display text-sm font-bold text-terra">
-                      {cred.titulo}
-                    </dt>
-                    <dd className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                      {cred.texto}
-                    </dd>
+                    <dt className="font-display text-sm font-bold text-terra">{cred.titulo}</dt>
+                    <dd className="mt-1 text-xs text-muted-foreground sm:text-sm">{cred.texto}</dd>
                   </div>
                 ))}
               </dl>
@@ -179,9 +170,7 @@ function Index() {
               <h2 className="mt-3 text-2xl font-extrabold text-floresta sm:text-3xl md:text-4xl">
                 {t.modelosTitle}
               </h2>
-              <p className="mt-4 text-sm text-foreground/85 sm:text-base">
-                {t.modelosDescription}
-              </p>
+              <p className="mt-4 text-sm text-foreground/85 sm:text-base">{t.modelosDescription}</p>
             </div>
             <div className="mt-8 grid gap-4 sm:mt-12 sm:gap-6 md:grid-cols-3">
               {config.blocos.modelos.map((m) => (
@@ -238,12 +227,8 @@ function Index() {
 
             {MOSTRAR_PORTFOLIO && (
               <div className="mt-12">
-                <h3 className="text-xl font-extrabold text-background">
-                  {t.projectsTitle}
-                </h3>
-                <p className="mt-2 max-w-2xl text-sm text-background/80">
-                  {t.projectsDescription}
-                </p>
+                <h3 className="text-xl font-extrabold text-background">{t.projectsTitle}</h3>
+                <p className="mt-2 max-w-2xl text-sm text-background/80">{t.projectsDescription}</p>
                 <div className="mt-8 grid gap-4 sm:gap-6 sm:grid-cols-2">
                   {portfolio.map((p, i) => (
                     <article key={i} className="group relative overflow-hidden rounded-md">
@@ -260,9 +245,7 @@ function Index() {
                         <h4 className="font-display text-base font-bold text-background sm:text-xl">
                           {p.nome}
                         </h4>
-                        <p className="mt-1 text-xs text-background/90 sm:text-sm">
-                          {p.resumo}
-                        </p>
+                        <p className="mt-1 text-xs text-background/90 sm:text-sm">{p.resumo}</p>
                       </div>
                     </article>
                   ))}
@@ -301,9 +284,7 @@ function Index() {
               <h2 className="text-2xl font-extrabold text-floresta sm:text-3xl md:text-4xl">
                 {t.conformidadeTitle}
               </h2>
-              <p className="mt-4 text-sm text-foreground/85 sm:text-base">
-                {t.conformidadeTexto}
-              </p>
+              <p className="mt-4 text-sm text-foreground/85 sm:text-base">{t.conformidadeTexto}</p>
             </div>
             <ul className="space-y-3">
               {config.blocos.conformidade.map((item) => (

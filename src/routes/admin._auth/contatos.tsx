@@ -23,7 +23,11 @@ const CAMPOS: Array<{ key: ContatoKey; label: string; ajuda?: string; area?: boo
   { key: "razaoSocial", label: "Razão social" },
   { key: "cnpj", label: "CNPJ" },
   { key: "telefone", label: "Telefone exibido" },
-  { key: "whatsapp", label: "Número do WhatsApp", ajuda: "Somente números, com DDI. Ex.: 5538998421869" },
+  {
+    key: "whatsapp",
+    label: "Número do WhatsApp",
+    ajuda: "Somente números, com DDI. Ex.: 5538998421869",
+  },
   { key: "email", label: "E-mail" },
   { key: "sede", label: "Sede" },
   { key: "atuacao", label: "Área de atuação" },
@@ -119,7 +123,10 @@ function ContatosEditor() {
 
         <div className="mt-4 space-y-3">
           {config.sociais.map((s, i) => (
-            <div key={i} className="flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div
+              key={i}
+              className="flex flex-wrap items-end gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4"
+            >
               <div className="w-40">
                 <label className={labelCls}>Nome</label>
                 <input

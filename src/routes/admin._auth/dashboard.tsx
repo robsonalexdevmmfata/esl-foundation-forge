@@ -30,7 +30,9 @@ const CORES = ["#1E5F4D", "#C96E48", "#E0B05C", "#0ea5e9", "#8b5cf6", "#10b981"]
 
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`min-w-0 rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-5 ${className}`}>
+    <div
+      className={`min-w-0 rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-5 ${className}`}
+    >
       {children}
     </div>
   );
@@ -42,25 +44,49 @@ function AdminDashboard() {
   const config = useSiteConfig();
 
   const kpis = [
-    { label: "Clientes cadastrados", value: String(m.totalClientes), delta: `${m.clientesFechados} fechados · ${m.clientesNegociacao} em negociação` },
-    { label: "Projetos", value: String(m.totalProjetos), delta: `${m.projetosExecucao} em execução · ${m.projetosConcluidos} concluídos` },
-    { label: "Carteira contratada", value: brl(m.carteira), delta: `Ticket médio ${brl(m.ticketMedio)}` },
-    { label: "Receita realizada", value: brl(m.receitaRealizada), delta: `Progresso médio ${m.progressoMedio}%` },
+    {
+      label: "Clientes cadastrados",
+      value: String(m.totalClientes),
+      delta: `${m.clientesFechados} fechados · ${m.clientesNegociacao} em negociação`,
+    },
+    {
+      label: "Projetos",
+      value: String(m.totalProjetos),
+      delta: `${m.projetosExecucao} em execução · ${m.projetosConcluidos} concluídos`,
+    },
+    {
+      label: "Carteira contratada",
+      value: brl(m.carteira),
+      delta: `Ticket médio ${brl(m.ticketMedio)}`,
+    },
+    {
+      label: "Receita realizada",
+      value: brl(m.receitaRealizada),
+      delta: `Progresso médio ${m.progressoMedio}%`,
+    },
   ];
 
   return (
     <div className="space-y-6">
       <header className="flex min-w-0 flex-col gap-4 rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.03)] sm:p-6 md:flex-row md:items-center md:justify-between">
         <div>
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">Overview</p>
-          <h1 className="text-3xl font-bold tracking-[-0.04em] text-slate-900 sm:text-[34px]">Dashboard</h1>
+          <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">
+            Overview
+          </p>
+          <h1 className="text-3xl font-bold tracking-[-0.04em] text-slate-900 sm:text-[34px]">
+            Dashboard
+          </h1>
           <p className="mt-1 text-sm text-slate-500">
             Dados reais de clientes, projetos e do conteúdo publicado no site
           </p>
         </div>
         <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
           {config.logo.navbar ? (
-            <img src={config.logo.navbar} alt="Logo do site" className="h-9 w-auto object-contain" />
+            <img
+              src={config.logo.navbar}
+              alt="Logo do site"
+              className="h-9 w-auto object-contain"
+            />
           ) : null}
           <div>
             <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">Site</p>
@@ -73,8 +99,13 @@ function AdminDashboard() {
         {kpis.map((card, i) => (
           <Card key={card.label} className="transition-transform duration-200 hover:-translate-y-1">
             <p className="text-xs text-slate-500 sm:text-sm">{card.label}</p>
-            <p className="mt-2 break-words text-xl font-bold tracking-tight text-slate-900 sm:mt-3 sm:text-3xl">{card.value}</p>
-            <p className="mt-3 text-[10px] font-medium leading-relaxed sm:mt-4 sm:text-xs" style={{ color: CORES[i % CORES.length] }}>
+            <p className="mt-2 break-words text-xl font-bold tracking-tight text-slate-900 sm:mt-3 sm:text-3xl">
+              {card.value}
+            </p>
+            <p
+              className="mt-3 text-[10px] font-medium leading-relaxed sm:mt-4 sm:text-xs"
+              style={{ color: CORES[i % CORES.length] }}
+            >
               {card.delta}
             </p>
           </Card>
@@ -83,13 +114,25 @@ function AdminDashboard() {
 
       <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-2">
         <Card>
-          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">Projetos e receita por mês</h3>
+          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">
+            Projetos e receita por mês
+          </h3>
           <div className="h-64 min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={m.porMes}>
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" />
-                <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
-                <YAxis width={42} tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
+                <XAxis
+                  dataKey="name"
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#64748b", fontSize: 10 }}
+                />
+                <YAxis
+                  width={42}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#64748b", fontSize: 10 }}
+                />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }} />
                 <Legend />
                 <Bar dataKey="projetos" name="Projetos" radius={[8, 8, 0, 0]} fill="#1E5F4D" />
@@ -100,7 +143,9 @@ function AdminDashboard() {
         </Card>
 
         <Card>
-          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">Clientes por setor</h3>
+          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">
+            Clientes por setor
+          </h3>
           <div className="h-64 min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -125,29 +170,63 @@ function AdminDashboard() {
         </Card>
 
         <Card>
-          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">Novos clientes por mês</h3>
+          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">
+            Novos clientes por mês
+          </h3>
           <div className="h-64 min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={m.porMes}>
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" />
-                <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
-                <YAxis width={42} tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
+                <XAxis
+                  dataKey="name"
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#64748b", fontSize: 10 }}
+                />
+                <YAxis
+                  width={42}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#64748b", fontSize: 10 }}
+                />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }} />
                 <Legend />
-                <Line type="monotone" dataKey="clientes" name="Clientes" stroke="#C96E48" strokeWidth={3} dot={{ r: 4 }} />
+                <Line
+                  type="monotone"
+                  dataKey="clientes"
+                  name="Clientes"
+                  stroke="#C96E48"
+                  strokeWidth={3}
+                  dot={{ r: 4 }}
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </Card>
 
         <Card>
-          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">Projetos por status</h3>
+          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">
+            Projetos por status
+          </h3>
           <div className="h-64 min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={m.porStatus} layout="vertical">
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" />
-                <XAxis type="number" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} allowDecimals={false} />
-                <YAxis type="category" dataKey="name" width={90} tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 9 }} />
+                <XAxis
+                  type="number"
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#64748b", fontSize: 10 }}
+                  allowDecimals={false}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={90}
+                  tickLine={false}
+                  axisLine={false}
+                  tick={{ fill: "#64748b", fontSize: 9 }}
+                />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }} />
                 <Bar dataKey="value" name="Projetos" radius={[0, 8, 8, 0]} fill="#1E5F4D" />
               </BarChart>
@@ -159,13 +238,20 @@ function AdminDashboard() {
       <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-2">
         <Card>
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
-            <h3 className="text-base font-semibold text-slate-800 sm:text-lg">Projetos em andamento</h3>
-            <Link to="/admin/projetos" className="shrink-0 text-sm font-semibold text-emerald-700 hover:underline">
+            <h3 className="text-base font-semibold text-slate-800 sm:text-lg">
+              Projetos em andamento
+            </h3>
+            <Link
+              to="/admin/projetos"
+              className="shrink-0 text-sm font-semibold text-emerald-700 hover:underline"
+            >
               Gerenciar
             </Link>
           </div>
           <div className="space-y-4">
-            {data.projetos.length === 0 && <p className="text-sm text-slate-500">Nenhum projeto cadastrado.</p>}
+            {data.projetos.length === 0 && (
+              <p className="text-sm text-slate-500">Nenhum projeto cadastrado.</p>
+            )}
             {data.projetos.map((p) => (
               <div key={p.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                 <div className="mb-3 flex items-start justify-between gap-3">
@@ -175,10 +261,15 @@ function AdminDashboard() {
                       {p.cliente} · Prazo: {p.prazo}
                     </p>
                   </div>
-                  <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">{p.progresso}%</span>
+                  <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">
+                    {p.progresso}%
+                  </span>
                 </div>
                 <div className="mb-2 h-2.5 w-full overflow-hidden rounded-full bg-slate-200">
-                  <div className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-amber-500" style={{ width: `${p.progresso}%` }} />
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-emerald-600 to-amber-500"
+                    style={{ width: `${p.progresso}%` }}
+                  />
                 </div>
                 <p className="text-sm text-slate-500">
                   {p.status} · {brl(p.valor)}
@@ -191,14 +282,22 @@ function AdminDashboard() {
         <Card>
           <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
             <h3 className="text-base font-semibold text-slate-800 sm:text-lg">Clientes recentes</h3>
-            <Link to="/admin/clientes" className="shrink-0 text-sm font-semibold text-emerald-700 hover:underline">
+            <Link
+              to="/admin/clientes"
+              className="shrink-0 text-sm font-semibold text-emerald-700 hover:underline"
+            >
               Gerenciar
             </Link>
           </div>
           <div className="space-y-3">
-            {data.clientes.length === 0 && <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>}
+            {data.clientes.length === 0 && (
+              <p className="text-sm text-slate-500">Nenhum cliente cadastrado.</p>
+            )}
             {data.clientes.slice(0, 6).map((c) => (
-              <div key={c.id} className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+              <div
+                key={c.id}
+                className="flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3"
+              >
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-100 text-sm font-bold text-emerald-700">
                   {c.nome.slice(0, 2).toUpperCase()}
                 </div>
