@@ -79,7 +79,9 @@ function ProjetosPage() {
       <div className="rounded-[24px] border border-slate-200 bg-white p-6 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">Projetos</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">
+              Projetos
+            </p>
             <h1 className="mt-2 text-3xl font-bold text-slate-900">Projetos e cronograma</h1>
           </div>
           <button
@@ -108,8 +110,20 @@ function ProjetosPage() {
               <YAxis unit="%" tick={{ fontSize: 12 }} />
               <Tooltip formatter={(v: number) => `${v}%`} />
               <Legend />
-              <Bar dataKey="progresso" name="Concluído" stackId="a" fill="#7c3aed" radius={[0, 0, 6, 6]} />
-              <Bar dataKey="restante" name="Restante" stackId="a" fill="#e2e8f0" radius={[6, 6, 0, 0]} />
+              <Bar
+                dataKey="progresso"
+                name="Concluído"
+                stackId="a"
+                fill="#7c3aed"
+                radius={[0, 0, 6, 6]}
+              />
+              <Bar
+                dataKey="restante"
+                name="Restante"
+                stackId="a"
+                fill="#e2e8f0"
+                radius={[6, 6, 0, 0]}
+              />
             </BarChart>
           </ResponsiveContainer>
         </Panel>
@@ -117,7 +131,14 @@ function ProjetosPage() {
         <Panel title="Projetos por status">
           <ResponsiveContainer width="100%" height={280}>
             <PieChart>
-              <Pie data={metrics.porStatus} dataKey="value" nameKey="name" innerRadius={55} outerRadius={95} paddingAngle={3}>
+              <Pie
+                data={metrics.porStatus}
+                dataKey="value"
+                nameKey="name"
+                innerRadius={55}
+                outerRadius={95}
+                paddingAngle={3}
+              >
                 {metrics.porStatus.map((entry, i) => (
                   <Cell key={entry.name} fill={PIE_COLORS[i % PIE_COLORS.length]} />
                 ))}
@@ -140,9 +161,19 @@ function ProjetosPage() {
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
             <XAxis dataKey="name" tick={{ fontSize: 12 }} />
-            <YAxis tick={{ fontSize: 12 }} tickFormatter={(v: number) => `${Math.round(v / 1000)}K`} />
+            <YAxis
+              tick={{ fontSize: 12 }}
+              tickFormatter={(v: number) => `${Math.round(v / 1000)}K`}
+            />
             <Tooltip formatter={(v: number) => brl(v)} />
-            <Area type="monotone" dataKey="receita" name="Valor" stroke="#7c3aed" fill="url(#grad-projetos)" strokeWidth={2} />
+            <Area
+              type="monotone"
+              dataKey="receita"
+              name="Valor"
+              stroke="#7c3aed"
+              fill="url(#grad-projetos)"
+              strokeWidth={2}
+            />
           </AreaChart>
         </ResponsiveContainer>
       </Panel>
@@ -150,7 +181,9 @@ function ProjetosPage() {
       <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-slate-800">Projetos em andamento</h2>
-          <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700">Progresso médio {metrics.progressoMedio}%</span>
+          <span className="rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700">
+            Progresso médio {metrics.progressoMedio}%
+          </span>
         </div>
 
         <div className="space-y-5">
@@ -160,11 +193,15 @@ function ProjetosPage() {
                 <div>
                   <h3 className="text-lg font-semibold text-slate-800">{projeto.nome}</h3>
                   <p className="text-sm text-slate-500">
-                    Cliente: {projeto.cliente} · Início {projeto.inicio.split("-").reverse().join("/")} · Prazo {projeto.prazo.split("-").reverse().join("/")}
+                    Cliente: {projeto.cliente} · Início{" "}
+                    {projeto.inicio.split("-").reverse().join("/")} · Prazo{" "}
+                    {projeto.prazo.split("-").reverse().join("/")}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">{brl(projeto.valor)}</span>
+                  <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+                    {brl(projeto.valor)}
+                  </span>
                   <select
                     value={projeto.status}
                     onChange={(e) => updateProjeto(projeto.id, { status: e.target.value })}
@@ -200,21 +237,33 @@ function ProjetosPage() {
               </div>
             </div>
           ))}
-          {data.projetos.length === 0 && <p className="py-6 text-center text-slate-400">Nenhum projeto cadastrado.</p>}
+          {data.projetos.length === 0 && (
+            <p className="py-6 text-center text-slate-400">Nenhum projeto cadastrado.</p>
+          )}
         </div>
       </div>
 
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 p-4">
-          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+          <div className="max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-2xl bg-white p-5 shadow-2xl sm:p-6">
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-xl font-bold text-slate-900">Novo projeto</h3>
-              <button type="button" onClick={() => setIsOpen(false)} className="text-slate-500 hover:text-slate-700">✕</button>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="text-slate-500 hover:text-slate-700"
+              >
+                ✕
+              </button>
             </div>
 
             <div className="space-y-4">
               <Field label="Nome do projeto">
-                <input value={form.nome} onChange={(e) => setForm({ ...form, nome: e.target.value })} className={inputClass} />
+                <input
+                  value={form.nome}
+                  onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                  className={inputClass}
+                />
               </Field>
               <Field label="Cliente">
                 <input
@@ -230,32 +279,72 @@ function ProjetosPage() {
                 </datalist>
               </Field>
               <Field label="Valor (R$)">
-                <input type="number" value={form.valor} onChange={(e) => setForm({ ...form, valor: e.target.value })} className={inputClass} />
+                <input
+                  type="number"
+                  value={form.valor}
+                  onChange={(e) => setForm({ ...form, valor: e.target.value })}
+                  className={inputClass}
+                />
               </Field>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Início">
-                  <input type="date" value={form.inicio} onChange={(e) => setForm({ ...form, inicio: e.target.value })} className={inputClass} />
+                  <input
+                    type="date"
+                    value={form.inicio}
+                    onChange={(e) => setForm({ ...form, inicio: e.target.value })}
+                    className={inputClass}
+                  />
                 </Field>
                 <Field label="Prazo">
-                  <input type="date" value={form.prazo} onChange={(e) => setForm({ ...form, prazo: e.target.value })} className={inputClass} />
+                  <input
+                    type="date"
+                    value={form.prazo}
+                    onChange={(e) => setForm({ ...form, prazo: e.target.value })}
+                    className={inputClass}
+                  />
                 </Field>
               </div>
               <Field label="Status">
-                <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} className={inputClass}>
+                <select
+                  value={form.status}
+                  onChange={(e) => setForm({ ...form, status: e.target.value })}
+                  className={inputClass}
+                >
                   <option>Em execução</option>
                   <option>Aguardando aprovação</option>
                   <option>Fechado</option>
                 </select>
               </Field>
               <Field label={`Progresso (${form.progresso}%)`}>
-                <input type="range" min={0} max={100} value={form.progresso} onChange={(e) => setForm({ ...form, progresso: e.target.value })} className="w-full accent-violet-600" />
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={form.progresso}
+                  onChange={(e) => setForm({ ...form, progresso: e.target.value })}
+                  className="w-full accent-violet-600"
+                />
               </Field>
-              {erro && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erro}</p>}
+              {erro && (
+                <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{erro}</p>
+              )}
             </div>
 
             <div className="mt-6 flex justify-end gap-3">
-              <button type="button" onClick={() => setIsOpen(false)} className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600">Cancelar</button>
-              <button type="button" onClick={handleCreateProject} className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700">Salvar</button>
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                onClick={handleCreateProject}
+                className="rounded-lg bg-violet-600 px-4 py-2 text-sm font-semibold text-white hover:bg-violet-700"
+              >
+                Salvar
+              </button>
             </div>
           </div>
         </div>
@@ -264,7 +353,8 @@ function ProjetosPage() {
   );
 }
 
-const inputClass = "w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-violet-500";
+const inputClass =
+  "w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-violet-500";
 
 function Field({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -284,9 +374,19 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-function Panel({ title, children, className = "" }: { title: string; children: React.ReactNode; className?: string }) {
+function Panel({
+  title,
+  children,
+  className = "",
+}: {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <div className={`rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)] ${className}`}>
+    <div
+      className={`rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)] ${className}`}
+    >
       <h3 className="mb-4 text-base font-semibold text-slate-800">{title}</h3>
       {children}
     </div>

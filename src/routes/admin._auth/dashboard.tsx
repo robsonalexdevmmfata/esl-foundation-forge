@@ -30,7 +30,7 @@ const CORES = ["#1E5F4D", "#C96E48", "#E0B05C", "#0ea5e9", "#8b5cf6", "#10b981"]
 
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)] ${className}`}>
+    <div className={`min-w-0 rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-5 ${className}`}>
       {children}
     </div>
   );
@@ -50,15 +50,15 @@ function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <header className="flex flex-col gap-4 rounded-[24px] border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.03)] md:flex-row md:items-center md:justify-between">
+      <header className="flex min-w-0 flex-col gap-4 rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(15,23,42,0.03)] sm:p-6 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-slate-500">Overview</p>
-          <h1 className="text-[34px] font-bold tracking-[-0.04em] text-slate-900">Dashboard</h1>
+          <h1 className="text-3xl font-bold tracking-[-0.04em] text-slate-900 sm:text-[34px]">Dashboard</h1>
           <p className="mt-1 text-sm text-slate-500">
             Dados reais de clientes, projetos e do conteúdo publicado no site
           </p>
         </div>
-        <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+        <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
           {config.logo.navbar ? (
             <img src={config.logo.navbar} alt="Logo do site" className="h-9 w-auto object-contain" />
           ) : null}
@@ -69,27 +69,27 @@ function AdminDashboard() {
         </div>
       </header>
 
-      <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
         {kpis.map((card, i) => (
           <Card key={card.label} className="transition-transform duration-200 hover:-translate-y-1">
-            <p className="text-sm text-slate-500">{card.label}</p>
-            <p className="mt-3 text-3xl font-bold tracking-tight text-slate-900">{card.value}</p>
-            <p className="mt-4 text-xs font-medium" style={{ color: CORES[i % CORES.length] }}>
+            <p className="text-xs text-slate-500 sm:text-sm">{card.label}</p>
+            <p className="mt-2 break-words text-xl font-bold tracking-tight text-slate-900 sm:mt-3 sm:text-3xl">{card.value}</p>
+            <p className="mt-3 text-[10px] font-medium leading-relaxed sm:mt-4 sm:text-xs" style={{ color: CORES[i % CORES.length] }}>
               {card.delta}
             </p>
           </Card>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-2">
         <Card>
-          <h3 className="mb-4 text-lg font-semibold text-slate-800">Projetos e receita por mês</h3>
-          <div className="h-[300px]">
+          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">Projetos e receita por mês</h3>
+          <div className="h-64 min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={m.porMes}>
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" />
-                <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
-                <YAxis tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
+                <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
+                <YAxis width={42} tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }} />
                 <Legend />
                 <Bar dataKey="projetos" name="Projetos" radius={[8, 8, 0, 0]} fill="#1E5F4D" />
@@ -100,20 +100,19 @@ function AdminDashboard() {
         </Card>
 
         <Card>
-          <h3 className="mb-4 text-lg font-semibold text-slate-800">Clientes por setor</h3>
-          <div className="h-[300px]">
+          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">Clientes por setor</h3>
+          <div className="h-64 min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={m.porSetor}
                   cx="50%"
                   cy="50%"
-                  innerRadius={55}
-                  outerRadius={88}
+                  innerRadius={42}
+                  outerRadius={72}
                   paddingAngle={3}
                   dataKey="value"
-                  label={({ name, value }) => `${name}: ${value}`}
-                  labelLine={false}
+                  label={false}
                 >
                   {m.porSetor.map((_, i) => (
                     <Cell key={i} fill={CORES[i % CORES.length]} />
@@ -126,13 +125,13 @@ function AdminDashboard() {
         </Card>
 
         <Card>
-          <h3 className="mb-4 text-lg font-semibold text-slate-800">Novos clientes por mês</h3>
-          <div className="h-[300px]">
+          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">Novos clientes por mês</h3>
+          <div className="h-64 min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={m.porMes}>
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" />
-                <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
-                <YAxis tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
+                <XAxis dataKey="name" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
+                <YAxis width={42} tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }} />
                 <Legend />
                 <Line type="monotone" dataKey="clientes" name="Clientes" stroke="#C96E48" strokeWidth={3} dot={{ r: 4 }} />
@@ -142,13 +141,13 @@ function AdminDashboard() {
         </Card>
 
         <Card>
-          <h3 className="mb-4 text-lg font-semibold text-slate-800">Projetos por status</h3>
-          <div className="h-[300px]">
+          <h3 className="mb-4 text-base font-semibold text-slate-800 sm:text-lg">Projetos por status</h3>
+          <div className="h-64 min-w-0 sm:h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={m.porStatus} layout="vertical">
                 <CartesianGrid strokeDasharray="4 4" stroke="#e2e8f0" />
-                <XAxis type="number" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 12 }} allowDecimals={false} />
-                <YAxis type="category" dataKey="name" width={140} tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 12 }} />
+                <XAxis type="number" tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 10 }} allowDecimals={false} />
+                <YAxis type="category" dataKey="name" width={90} tickLine={false} axisLine={false} tick={{ fill: "#64748b", fontSize: 9 }} />
                 <Tooltip contentStyle={{ borderRadius: 16, border: "1px solid #e2e8f0" }} />
                 <Bar dataKey="value" name="Projetos" radius={[0, 8, 8, 0]} fill="#1E5F4D" />
               </BarChart>
@@ -157,11 +156,11 @@ function AdminDashboard() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+      <div className="grid min-w-0 grid-cols-1 gap-4 sm:gap-5 xl:grid-cols-2">
         <Card>
-          <div className="mb-5 flex items-center justify-between gap-3">
-            <h3 className="text-lg font-semibold text-slate-800">Projetos em andamento</h3>
-            <Link to="/admin/projetos" className="text-sm font-semibold text-emerald-700 hover:underline">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <h3 className="text-base font-semibold text-slate-800 sm:text-lg">Projetos em andamento</h3>
+            <Link to="/admin/projetos" className="shrink-0 text-sm font-semibold text-emerald-700 hover:underline">
               Gerenciar
             </Link>
           </div>
@@ -171,7 +170,7 @@ function AdminDashboard() {
               <div key={p.id} className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
                 <div className="mb-3 flex items-start justify-between gap-3">
                   <div>
-                    <h4 className="font-semibold text-slate-800">{p.nome}</h4>
+                    <h4 className="break-words font-semibold text-slate-800">{p.nome}</h4>
                     <p className="mt-1 text-xs text-slate-500">
                       {p.cliente} · Prazo: {p.prazo}
                     </p>
@@ -190,9 +189,9 @@ function AdminDashboard() {
         </Card>
 
         <Card>
-          <div className="mb-5 flex items-center justify-between gap-3">
-            <h3 className="text-lg font-semibold text-slate-800">Clientes recentes</h3>
-            <Link to="/admin/clientes" className="text-sm font-semibold text-emerald-700 hover:underline">
+          <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <h3 className="text-base font-semibold text-slate-800 sm:text-lg">Clientes recentes</h3>
+            <Link to="/admin/clientes" className="shrink-0 text-sm font-semibold text-emerald-700 hover:underline">
               Gerenciar
             </Link>
           </div>

@@ -13,7 +13,10 @@ export const Route = createFileRoute("/admin/_auth/cores-textos")({
 
 type TextKey = keyof SiteConfig["texts"];
 
-const GRUPOS: Array<{ grupo: string; campos: Array<{ key: TextKey; label: string; rows?: number }> }> = [
+const GRUPOS: Array<{
+  grupo: string;
+  campos: Array<{ key: TextKey; label: string; rows?: number }>;
+}> = [
   {
     grupo: "Topo (Hero)",
     campos: [
@@ -109,7 +112,9 @@ function ColorPicker({
     <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
       <div className="mb-2 flex items-center justify-between gap-3">
         <span className="block text-sm font-semibold text-gray-700">{label}</span>
-        <span className="text-[10px] uppercase tracking-[0.2em] text-slate-400">{value}</span>
+        <span className="min-w-0 truncate text-[10px] uppercase tracking-[0.2em] text-slate-400">
+          {value}
+        </span>
       </div>
       <p className="mb-3 text-xs text-slate-500">{description}</p>
       <div className="flex gap-3">

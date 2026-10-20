@@ -16,7 +16,7 @@ export function Header() {
           <img
             src={config.logo.navbar || logoPng}
             alt="E.S.L & Empreendimentos — serviços corporativos e institucionais"
-            className="h-16 w-auto md:h-20"
+            className="h-12 w-auto sm:h-16 md:h-20"
             width={300}
             height={80}
           />
@@ -46,9 +46,12 @@ export function Header() {
             {config.navbar.buttonText}
           </a>
           <button
-            aria-label="Abrir menu"
+            type="button"
+            aria-label={open ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
             onClick={() => setOpen((v) => !v)}
-            className="rounded-md border border-border p-2 lg:hidden"
+            className="flex h-11 w-11 flex-col items-center justify-center rounded-md border border-border p-2 lg:hidden"
             style={{ color: config.colors.primary }}
           >
             <span className="block h-0.5 w-5 bg-current" />
@@ -59,7 +62,10 @@ export function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-border bg-background px-4 py-4 lg:hidden sm:px-5">
+        <nav
+          id="mobile-navigation"
+          className="border-t border-border bg-background px-4 py-4 lg:hidden sm:px-5"
+        >
           {links.map((l) => (
             <a
               key={l.href}
@@ -92,7 +98,10 @@ export function Footer() {
   const c = config.contato;
 
   return (
-    <footer className="bg-carvao text-background" style={{ backgroundColor: config.colors.secondary }}>
+    <footer
+      className="bg-carvao text-background"
+      style={{ backgroundColor: config.colors.secondary }}
+    >
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-5 sm:py-14 md:grid-cols-3">
         <div>
           <img
@@ -132,7 +141,9 @@ export function Footer() {
             Contato
           </p>
           <ul className="mt-4 space-y-2 text-sm text-background/80">
-            <li>{c.sede} · {c.atuacao}</li>
+            <li>
+              {c.sede} · {c.atuacao}
+            </li>
             <li>{c.telefone}</li>
             <li>{c.email}</li>
           </ul>

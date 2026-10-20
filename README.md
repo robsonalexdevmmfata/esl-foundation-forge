@@ -94,8 +94,7 @@ Realismo sofisticado, foco em luz natural e linhas arquitetônicas limpas.
 
 Paleta de cores das imagens: Tons neutros de concreto, aço, vidro, mas integrados com luzes quentes (que combinam com o Terra Cota/Mostarda) e vegetação (que combina com o Verde). Evitar imagens saturadas demais.
 
-
-preciso que vc seja criativo apra criar os textos  menus e botao de ação  para chamar no whatsapp e pedindo orcamento e preciso que lyaout tenha as cores da logo bem bonito no rodape tenha todos direitos reservados a empresa da logo e desenvolvido pelaagencia info tech e ao clica em info tech no rodape seja redirecionado para www.agenciainfotech.com.br
+preciso que vc seja criativo apra criar os textos menus e botao de ação para chamar no whatsapp e pedindo orcamento e preciso que lyaout tenha as cores da logo bem bonito no rodape tenha todos direitos reservados a empresa da logo e desenvolvido pelaagencia info tech e ao clica em info tech no rodape seja redirecionado para www.agenciainfotech.com.br
 
 This project was built with [Lovable](https://lovable.dev).
 
@@ -119,3 +118,28 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Deploy to a VPS
+
+Build the Node.js server package with `npm run build`, then upload the entire
+generated `dist` folder to the VPS. This app requires Node.js; `dist/public`
+alone is not a complete deployment. Start the app from the project directory
+with `npm start` and configure the VPS web server to proxy requests to it.
+
+### Admin panel credentials
+
+Set these variables in the environment of the Node.js process on the VPS (for
+example, in the systemd service configuration) and restart the application.
+The `npm start` command does not load `.env` files automatically. Use a new,
+unique password for the panel; do not reuse the PostgreSQL password.
+
+```ini
+Environment=ADMIN_USERNAME=gestaoesl
+Environment=ADMIN_PASSWORD=use-a-new-unique-password
+Environment=ADMIN_SESSION_SECRET=use-a-random-secret-at-least-32-characters
+```
+
+Generate the session secret with `openssl rand -hex 32`. Keep all values
+private and out of Git. The panel uses an encrypted, HTTP-only session cookie
+that expires after eight hours. The old `admin` / `123456` browser login is no
+longer accepted.

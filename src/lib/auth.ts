@@ -1,24 +1,18 @@
-export const ADMIN_CREDENTIALS = {
-  username: "admin",
-  password: "123456",
-};
+import { checkAdminSession, loginAdmin, logoutAdmin } from "@/lib/admin-auth.functions";
 
-export function isAuthenticated(): boolean {
-  if (typeof window === "undefined") return false;
-  return localStorage.getItem("admin_authenticated") === "true";
+export async function isAuthenticated(): Promise<boolean> {
+  const result = await checkAdminSession();
+  return result.authenticated;
 }
 
-export function login(username: string, password: string): boolean {
-  if (
-    username === ADMIN_CREDENTIALS.username &&
-    password === ADMIN_CREDENTIALS.password
-  ) {
-    localStorage.setItem("admin_authenticated", "true");
-    return true;
+export async function login(username: string, password: string): Promise<boolean> {
+  const result = await loginAdmin({ data: { username, password } });
+  return result.authenticated;
+}
+
+export async function logout(): Promise<void> {
+  await logoutAdmin();
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("admin_authenticated");
   }
-  return false;
-}
-
-export function logout(): void {
-  localStorage.removeItem("admin_authenticated");
 }
