@@ -1,7 +1,8 @@
 import { Outlet, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
 import { isAuthenticated, logout } from "@/lib/auth";
-import { getConfig } from "@/lib/site-config";
+import { useSiteConfig } from "@/lib/use-site-config";
+import { SafeLogo } from "@/components/site";
 
 type AdminLayoutProps = {
   children?: ReactNode;
@@ -9,7 +10,7 @@ type AdminLayoutProps = {
 
 export function AdminLayout({ children }: AdminLayoutProps) {
   const navigate = useNavigate();
-  const [config, setConfig] = useState(getConfig());
+  const config = useSiteConfig();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [accessChecked, setAccessChecked] = useState(false);
 
@@ -43,13 +44,25 @@ export function AdminLayout({ children }: AdminLayoutProps) {
     };
   }, [navigate]);
 
+  // Menu lateral móvel: fecha com Esc, ao virar tablet/desktop e trava a rolagem do fundo.
   useEffect(() => {
-    const handleConfigChange = () => {
-      setConfig(getConfig());
+    if (!mobileMenuOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileMenuOpen(false);
     };
-    window.addEventListener("siteConfigChanged", handleConfigChange);
-    return () => window.removeEventListener("siteConfigChanged", handleConfigChange);
-  }, []);
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMobileMenuOpen(false);
+    };
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [mobileMenuOpen]);
 
   const handleLogout = async () => {
     await logout();
@@ -81,13 +94,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       >
         <div className="flex items-center gap-3 px-5 py-5">
           <div className="flex h-[42px] w-[42px] items-center justify-center overflow-hidden rounded-xl bg-white shadow-sm">
-            <img
-              src={config.logo.navbar || "/logo.png"}
-              alt="ESL Facility Admin"
-              className="h-8 w-auto object-contain"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = "/logo.png";
-              }}
+            <SafeLogo
+              src={config.logo.navbar}
+              alt="Logo E.S.L"
+              className="h-8 w-auto max-w-[38px] object-contain"
             />
           </div>
         </div>
