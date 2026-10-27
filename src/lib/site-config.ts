@@ -313,7 +313,13 @@ function merge(parsed: Partial<SiteConfig>): SiteConfig {
     ...parsed,
     logo: { ...defaultConfig.logo, ...parsed.logo },
     logoNames: { ...(parsed.logoNames ?? {}) },
-    navbar: { ...defaultConfig.navbar, ...parsed.navbar },
+    navbar: {
+      links: Array.isArray(parsed.navbar?.links) ? parsed.navbar.links : defaultConfig.navbar.links,
+      buttonText:
+        typeof parsed.navbar?.buttonText === "string"
+          ? parsed.navbar.buttonText
+          : defaultConfig.navbar.buttonText,
+    },
     colors: { ...defaultConfig.colors, ...parsed.colors },
     texts: { ...defaultConfig.texts, ...parsed.texts },
     blocos: { ...defaultConfig.blocos, ...(parsed.blocos ?? {}) },
