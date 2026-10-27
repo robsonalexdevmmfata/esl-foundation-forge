@@ -66,7 +66,7 @@ export const loginAdmin = createServerFn({ method: "POST" })
       const user = result.rows[0];
 
       // Check if user is active
-      if (!user.active) {
+      if (!user || !user.active) {
         return { authenticated: false };
       }
 

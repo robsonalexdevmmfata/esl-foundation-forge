@@ -45,9 +45,9 @@ export const requireSupabaseAuth = createMiddleware({ type: "function" }).server
       // Pass through without Supabase auth
       return next({
         context: {
-          supabase: null,
-          userId: null,
-          claims: null,
+          supabase: null as unknown as ReturnType<typeof createClient<Database>>,
+          userId: null as unknown as string,
+          claims: null as unknown as Record<string, unknown> & { sub: string },
         },
       });
     }
