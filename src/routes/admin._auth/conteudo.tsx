@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { AdminLayout } from "@/components/admin-layout";
 import { getConfig, saveConfig, type ItemTexto, type SiteConfig } from "@/lib/site-config";
+import { readImageFile } from "@/lib/image-upload";
 
 export const Route = createFileRoute("/admin/_auth/conteudo")({
   component: () => (
@@ -64,8 +65,13 @@ function ConteudoEditor() {
     update({ ...config, blocos: { ...config.blocos, [key]: lista } });
 
   const salvar = () => {
-    saveConfig(config);
-    setSalvo(true);
+    if (saveConfig(config)) {
+      setSalvo(true);
+    } else {
+      window.alert(
+        "Não foi possível salvar: o armazenamento do navegador está cheio. Use logos menores ou remova algumas.",
+      );
+    }
   };
 
   return (
@@ -287,20 +293,25 @@ function ConteudoEditor() {
                     className="hidden"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
+                      e.target.value = "";
                       if (!file) return;
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        update({
-                          ...config,
-                          blocos: {
-                            ...config.blocos,
-                            clientes: config.blocos.clientes.map((it, idx) =>
-                              idx === i ? { ...it, src: String(reader.result), nome: it.nome } : it,
-                            ),
-                          },
-                        });
-                      };
-                      reader.readAsDataURL(file);
+                      readImageFile(file, 500)
+                        .then((src) =>
+                          update({
+                            ...config,
+                            blocos: {
+                              ...config.blocos,
+                              clientes: config.blocos.clientes.map((it, idx) =>
+                                idx === i ? { ...it, src } : it,
+                              ),
+                            },
+                          }),
+                        )
+                        .catch((err: unknown) =>
+                          window.alert(
+                            err instanceof Error ? err.message : "Não foi possível ler a imagem.",
+                          ),
+                        );
                     }}
                   />
                 </label>

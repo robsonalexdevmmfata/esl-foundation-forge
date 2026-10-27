@@ -27,7 +27,10 @@ export function getDbPool(): pg.Pool {
   return pool;
 }
 
-export async function queryDb<T = any>(text: string, params?: any[]): Promise<pg.QueryResult<T>> {
+export async function queryDb<T extends pg.QueryResultRow = pg.QueryResultRow>(
+  text: string,
+  params?: unknown[],
+): Promise<pg.QueryResult<T>> {
   const client = await getDbPool().connect();
   try {
     return await client.query<T>(text, params);

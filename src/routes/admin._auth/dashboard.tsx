@@ -17,6 +17,20 @@ import {
 import { AdminLayout } from "@/components/admin-layout";
 import { brl, computeMetrics, useAdminData, whatsappLink } from "@/lib/admin-store";
 import { useSiteConfig } from "@/lib/use-site-config";
+import { useState } from "react";
+import { navbarButtonText, resetConfig } from "@/lib/site-config";
+import { SafeLogo } from "@/components/site";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/admin/_auth/dashboard")({
   component: () => (
@@ -38,10 +52,61 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
   );
 }
 
+function RestaurarSitePadrao({ onDone }: { onDone: () => void }) {
+  const [erro, setErro] = useState(false);
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <button
+          type="button"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 transition hover:bg-red-100"
+        >
+          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          Restaurar site padrão
+        </button>
+      </AlertDialogTrigger>
+      <AlertDialogContent className="w-[calc(100%-2rem)] max-w-md rounded-2xl">
+        <AlertDialogHeader>
+          <AlertDialogTitle>Restaurar o site ao padrão?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Todas as alterações feitas no site serão desfeitas: logos, imagens, cores, menu, textos,
+            conteúdo das seções, contatos e redes sociais. Clientes, projetos e dados financeiros do
+            painel não são apagados. Esta ação não pode ser desfeita.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        {erro && (
+          <p className="text-sm text-red-600">Não foi possível restaurar. Tente novamente.</p>
+        )}
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-red-600 text-white hover:bg-red-700"
+            onClick={() => {
+              const ok = resetConfig();
+              setErro(!ok);
+              if (ok) onDone();
+            }}
+          >
+            Sim, restaurar
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
 function AdminDashboard() {
   const data = useAdminData();
   const m = computeMetrics(data);
   const config = useSiteConfig();
+  const [restaurado, setRestaurado] = useState(false);
 
   const kpis = [
     {
@@ -80,20 +145,30 @@ function AdminDashboard() {
             Dados reais de clientes, projetos e do conteúdo publicado no site
           </p>
         </div>
-        <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
-          {config.logo.navbar ? (
-            <img
+        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+            <SafeLogo
               src={config.logo.navbar}
               alt="Logo do site"
-              className="h-9 w-auto object-contain"
+              className="h-9 w-auto max-w-[120px] shrink-0 object-contain"
             />
-          ) : null}
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">Site</p>
-            <strong className="block text-slate-700">{config.navbar.buttonText}</strong>
+            <div className="min-w-0">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">Site</p>
+              <strong className="block truncate text-slate-700">{navbarButtonText(config)}</strong>
+            </div>
           </div>
+          <RestaurarSitePadrao onDone={() => setRestaurado(true)} />
         </div>
       </header>
+
+      {restaurado && (
+        <div
+          role="status"
+          className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800"
+        >
+          O site voltou ao conteúdo original. Logos, cores, menu e textos foram restaurados.
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
         {kpis.map((card, i) => (

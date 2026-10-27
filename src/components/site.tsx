@@ -1,74 +1,119 @@
-import { useState } from "react";
+import { useEffect, useState, type ImgHTMLAttributes } from "react";
 import logoPng from "@/assets/logo.png";
-import { whatsappHref } from "@/lib/site-config";
+import { navbarButtonText, navbarLinks, whatsappHref } from "@/lib/site-config";
 import { useSiteConfig } from "@/lib/use-site-config";
+
+/** Imagem que volta para a logo padrão se o arquivo salvo estiver vazio ou quebrado. */
+export function SafeLogo({
+  src,
+  fallback = logoPng,
+  ...props
+}: Omit<ImgHTMLAttributes<HTMLImageElement>, "src"> & { src?: string; fallback?: string }) {
+  const [failed, setFailed] = useState(false);
+  useEffect(() => setFailed(false), [src]);
+  return <img {...props} src={!src || failed ? fallback : src} onError={() => setFailed(true)} />;
+}
 
 export function Header() {
   const [open, setOpen] = useState(false);
   const config = useSiteConfig();
-  const links = config.navbar.links;
+  const links = navbarLinks(config);
+  const buttonText = navbarButtonText(config);
   const whatsapp = whatsappHref(config.contato);
+
+  useEffect(() => {
+    if (!open) return;
+    const close = () => {
+      if (window.innerWidth >= 768) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("resize", close);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("resize", close);
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-5">
-        <a href="#inicio" className="flex items-center">
-          <img
-            src={config.logo.navbar || logoPng}
-            alt="E.S.L & Empreendimentos — serviços corporativos e institucionais"
-            className="h-12 w-auto sm:h-16 md:h-20"
-            width={300}
-            height={80}
-          />
-        </a>
+      <div className="mx-auto max-w-6xl px-4 sm:px-5">
+        <div className="flex items-center justify-between gap-3 py-3">
+          <a href="#inicio" className="flex min-w-0 shrink items-center">
+            <SafeLogo
+              src={config.logo.navbar}
+              alt="E.S.L & Empreendimentos — serviços corporativos e institucionais"
+              className="h-12 w-auto max-w-[170px] object-contain object-left sm:h-14 sm:max-w-[210px] lg:h-16 lg:max-w-[200px] xl:h-20 xl:max-w-[260px]"
+              width={300}
+              height={80}
+            />
+          </a>
 
-        <nav className="hidden items-center gap-4 md:gap-6 lg:flex">
-          {links.map((l) => (
+          <nav className="hidden min-w-0 flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-1 lg:flex xl:gap-x-6">
+            {links.map((l, i) => (
+              <a
+                key={`${l.href}-${i}`}
+                href={l.href}
+                className="whitespace-nowrap font-display text-xs font-semibold tracking-wide transition-colors hover:opacity-80 xl:text-sm"
+                style={{ color: config.colors.primary }}
+              >
+                {l.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className="flex shrink-0 items-center gap-2">
             <a
-              key={l.href}
+              href={whatsapp}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={buttonText}
+              className="hidden max-w-[220px] truncate whitespace-nowrap rounded-md px-4 py-2.5 font-display text-sm font-bold text-background shadow-sm transition-colors hover:opacity-90 sm:inline-block"
+              style={{ backgroundColor: config.colors.primary }}
+            >
+              {buttonText}
+            </a>
+            <button
+              type="button"
+              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={open}
+              aria-controls="mobile-navigation"
+              onClick={() => setOpen((v) => !v)}
+              className="flex h-11 w-11 flex-col items-center justify-center rounded-md border border-border p-2 md:hidden"
+              style={{ color: config.colors.primary }}
+            >
+              <span className="block h-0.5 w-5 bg-current" />
+              <span className="mt-1 block h-0.5 w-5 bg-current" />
+              <span className="mt-1 block h-0.5 w-5 bg-current" />
+            </button>
+          </div>
+        </div>
+
+        {/* Tablet: menu completo em uma segunda linha, sem hambúrguer */}
+        <nav className="hidden flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-border py-2.5 md:flex lg:hidden">
+          {links.map((l, i) => (
+            <a
+              key={`${l.href}-${i}`}
               href={l.href}
-              className="font-display text-xs font-semibold tracking-wide transition-colors hover:opacity-80 sm:text-sm"
+              className="whitespace-nowrap font-display text-xs font-semibold tracking-wide transition-colors hover:opacity-80"
               style={{ color: config.colors.primary }}
             >
               {l.label}
             </a>
           ))}
         </nav>
-
-        <div className="flex items-center gap-2">
-          <a
-            href={whatsapp}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden rounded-md px-3 py-2 font-display text-xs font-bold text-background shadow-sm transition-colors hover:opacity-90 sm:inline-flex sm:px-4 sm:py-2.5 sm:text-sm"
-            style={{ backgroundColor: config.colors.primary }}
-          >
-            {config.navbar.buttonText}
-          </a>
-          <button
-            type="button"
-            aria-label={open ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={open}
-            aria-controls="mobile-navigation"
-            onClick={() => setOpen((v) => !v)}
-            className="flex h-11 w-11 flex-col items-center justify-center rounded-md border border-border p-2 lg:hidden"
-            style={{ color: config.colors.primary }}
-          >
-            <span className="block h-0.5 w-5 bg-current" />
-            <span className="mt-1 block h-0.5 w-5 bg-current" />
-            <span className="mt-1 block h-0.5 w-5 bg-current" />
-          </button>
-        </div>
       </div>
 
       {open && (
         <nav
           id="mobile-navigation"
-          className="border-t border-border bg-background px-4 py-4 lg:hidden sm:px-5"
+          className="max-h-[calc(100dvh-72px)] overflow-y-auto border-t border-border bg-background px-4 py-4 sm:px-5 md:hidden"
         >
-          {links.map((l) => (
+          {links.map((l, i) => (
             <a
-              key={l.href}
+              key={`${l.href}-${i}`}
               href={l.href}
               onClick={() => setOpen(false)}
               className="block border-b border-border/50 py-3 font-display text-sm font-semibold last:border-0"
@@ -81,10 +126,10 @@ export function Header() {
             href={whatsapp}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-4 block rounded-md px-4 py-3 text-center font-display text-sm font-bold text-background"
+            className="mt-4 block break-words rounded-md px-4 py-3 text-center font-display text-sm font-bold text-background"
             style={{ backgroundColor: config.colors.primary }}
           >
-            {config.navbar.buttonText}
+            {buttonText}
           </a>
         </nav>
       )}
@@ -94,7 +139,7 @@ export function Header() {
 
 export function Footer() {
   const config = useSiteConfig();
-  const links = config.navbar.links;
+  const links = navbarLinks(config);
   const c = config.contato;
 
   return (
@@ -104,10 +149,10 @@ export function Footer() {
     >
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-5 sm:py-14 md:grid-cols-3">
         <div>
-          <img
-            src={config.logo.footer || logoPng}
+          <SafeLogo
+            src={config.logo.footer}
             alt="E.S.L & Empreendimentos"
-            className="h-16 w-auto sm:h-20"
+            className="h-16 w-auto max-w-[240px] object-contain object-left sm:h-20"
           />
           <p className="mt-3 max-w-xs text-sm text-background/70">
             {config.texts.footerDescription}
@@ -126,8 +171,8 @@ export function Footer() {
             Navegação
           </p>
           <ul className="mt-4 space-y-2 text-sm text-background/80">
-            {links.map((l) => (
-              <li key={l.href}>
+            {links.map((l, i) => (
+              <li key={`${l.href}-${i}`}>
                 <a href={l.href} className="hover:text-mostarda">
                   {l.label}
                 </a>
@@ -148,9 +193,9 @@ export function Footer() {
             <li>{c.email}</li>
           </ul>
           <div className="mt-4 flex flex-wrap gap-2 sm:gap-3">
-            {config.sociais.map((s) => (
+            {config.sociais.map((s, i) => (
               <a
-                key={s.label}
+                key={`${s.label}-${i}`}
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"

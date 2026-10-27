@@ -313,7 +313,13 @@ function merge(parsed: Partial<SiteConfig>): SiteConfig {
     ...parsed,
     logo: { ...defaultConfig.logo, ...parsed.logo },
     logoNames: { ...(parsed.logoNames ?? {}) },
-    navbar: { ...defaultConfig.navbar, ...parsed.navbar },
+    navbar: {
+      links: Array.isArray(parsed.navbar?.links) ? parsed.navbar.links : defaultConfig.navbar.links,
+      buttonText:
+        typeof parsed.navbar?.buttonText === "string"
+          ? parsed.navbar.buttonText
+          : defaultConfig.navbar.buttonText,
+    },
     colors: { ...defaultConfig.colors, ...parsed.colors },
     texts: { ...defaultConfig.texts, ...parsed.texts },
     blocos: { ...defaultConfig.blocos, ...(parsed.blocos ?? {}) },
@@ -339,11 +345,36 @@ export function getConfig(): SiteConfig {
   }
 }
 
-export function saveConfig(config: SiteConfig): void {
-  if (typeof window === "undefined") return;
+/** Salva a configuração. Retorna false se o navegador recusar (ex.: imagens grandes demais). */
+export function saveConfig(config: SiteConfig): boolean {
+  if (typeof window === "undefined") return false;
 
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(merge(config)));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(merge(config)));
+  } catch (error) {
+    console.error("Não foi possível salvar as configurações do site.", error);
+    return false;
+  }
   window.dispatchEvent(new Event("siteConfigChanged"));
+  return true;
+}
+
+/** Desfaz todas as personalizações do site, voltando ao conteúdo original. */
+export function resetConfig(): boolean {
+  const fresh = JSON.parse(JSON.stringify(defaultConfig)) as SiteConfig;
+  return saveConfig({ ...fresh, logoNames: {} });
+}
+
+/** Texto do botão do menu, nunca vazio. */
+export function navbarButtonText(config: SiteConfig): string {
+  return config.navbar.buttonText.trim() || defaultConfig.navbar.buttonText;
+}
+
+/** Links do menu sem itens vazios. */
+export function navbarLinks(config: SiteConfig): Array<{ href: string; label: string }> {
+  return config.navbar.links
+    .filter((l) => l.label.trim())
+    .map((l) => ({ label: l.label.trim(), href: l.href.trim() || "#" }));
 }
 
 /** Converte as cores do painel em variáveis CSS do design system da landing. */

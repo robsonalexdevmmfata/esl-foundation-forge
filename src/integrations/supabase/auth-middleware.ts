@@ -41,15 +41,7 @@ export const requireSupabaseAuth = createMiddleware({ type: "function" }).server
         ...(!SUPABASE_URL ? ["SUPABASE_URL"] : []),
         ...(!SUPABASE_PUBLISHABLE_KEY ? ["SUPABASE_PUBLISHABLE_KEY"] : []),
       ];
-      console.warn(`[Supabase Auth Middleware] Supabase not configured: ${missing.join(", ")}. Auth middleware disabled.`);
-      // Pass through without Supabase auth
-      return next({
-        context: {
-          supabase: null,
-          userId: null,
-          claims: null,
-        },
-      });
+      throw new Error(`Missing Supabase environment variable(s): ${missing.join(", ")}`);
     }
 
     const request = getRequest();
