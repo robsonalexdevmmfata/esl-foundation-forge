@@ -149,10 +149,10 @@ export function Footer() {
     >
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-5 sm:py-14 md:grid-cols-3">
         <div>
-          <img
-            src={config.logo.footer || logoPng}
+          <SafeLogo
+            src={config.logo.footer}
             alt="E.S.L & Empreendimentos"
-            className="h-16 w-auto sm:h-20"
+            className="h-16 w-auto max-w-[240px] object-contain object-left sm:h-20"
           />
           <p className="mt-3 max-w-xs text-sm text-background/70">
             {config.texts.footerDescription}
@@ -171,8 +171,8 @@ export function Footer() {
             Navegação
           </p>
           <ul className="mt-4 space-y-2 text-sm text-background/80">
-            {links.map((l) => (
-              <li key={l.href}>
+            {links.map((l, i) => (
+              <li key={`${l.href}-${i}`}>
                 <a href={l.href} className="hover:text-mostarda">
                   {l.label}
                 </a>
@@ -193,9 +193,9 @@ export function Footer() {
             <li>{c.email}</li>
           </ul>
           <div className="mt-4 flex flex-wrap gap-2 sm:gap-3">
-            {config.sociais.map((s) => (
+            {config.sociais.map((s, i) => (
               <a
-                key={s.label}
+                key={`${s.label}-${i}`}
                 href={s.url}
                 target="_blank"
                 rel="noopener noreferrer"
