@@ -51,7 +51,7 @@ export function Header() {
             />
           </a>
 
-          <nav className="hidden min-w-0 items-center gap-4 lg:flex xl:gap-6">
+          <nav className="hidden min-w-0 flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-1 lg:flex xl:gap-x-6">
             {links.map((l, i) => (
               <a
                 key={`${l.href}-${i}`}
