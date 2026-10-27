@@ -80,20 +80,30 @@ function AdminDashboard() {
             Dados reais de clientes, projetos e do conteúdo publicado no site
           </p>
         </div>
-        <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
-          {config.logo.navbar ? (
-            <img
+        <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex min-w-0 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-600">
+            <SafeLogo
               src={config.logo.navbar}
               alt="Logo do site"
-              className="h-9 w-auto object-contain"
+              className="h-9 w-auto max-w-[120px] shrink-0 object-contain"
             />
-          ) : null}
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">Site</p>
-            <strong className="block text-slate-700">{config.navbar.buttonText}</strong>
+            <div className="min-w-0">
+              <p className="text-[10px] uppercase tracking-[0.18em] text-slate-400">Site</p>
+              <strong className="block truncate text-slate-700">{navbarButtonText(config)}</strong>
+            </div>
           </div>
+          <RestaurarSitePadrao />
         </div>
       </header>
+
+      {restaurado && (
+        <div
+          role="status"
+          className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-800"
+        >
+          O site voltou ao conteúdo original. Logos, cores, menu e textos foram restaurados.
+        </div>
+      )}
 
       <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
         {kpis.map((card, i) => (
