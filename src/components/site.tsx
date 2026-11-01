@@ -46,14 +46,14 @@ export function Header() {
             <SafeLogo
               src={config.logo.navbar}
               alt="E.S.L & Empreendimentos — serviços corporativos e institucionais"
-              className="h-9 w-auto max-w-[140px] object-contain object-left md:max-w-[96px] lg:h-10 lg:max-w-[150px] xl:h-11 xl:max-w-[180px]"
+              className="h-9 w-auto max-w-[140px] object-contain object-left md:max-w-[130px] lg:h-10 lg:max-w-[150px] xl:h-11 xl:max-w-[180px]"
               width={300}
               height={80}
             />
           </a>
 
-          <div className="hidden min-w-0 items-center gap-3 md:flex lg:gap-5 xl:gap-7">
-            <nav className="flex min-w-0 shrink-[0.05] flex-wrap items-center justify-end gap-x-2.5 gap-y-1 lg:gap-x-5 xl:gap-x-6">
+          <div className="hidden min-w-0 shrink items-center justify-end gap-3 md:flex lg:gap-5 xl:gap-7">
+            <nav className="flex shrink-0 items-center justify-end gap-x-2.5 gap-y-1 lg:gap-x-5 xl:gap-x-6">
               {links.map((l, i) => (
                 <a
                   key={`${l.href}-${i}`}
@@ -70,7 +70,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               title={buttonText}
-              className="min-w-[84px] max-w-[120px] shrink truncate whitespace-nowrap rounded-md px-3 py-1.5 font-display text-[11px] font-bold text-background shadow-sm transition-colors hover:opacity-90 lg:max-w-[200px] lg:px-4 lg:py-2 lg:text-xs xl:max-w-[220px] xl:text-sm"
+              className="min-w-[84px] max-w-[160px] shrink truncate whitespace-nowrap rounded-md px-3 py-1.5 font-display text-[11px] font-bold text-background shadow-sm transition-colors hover:opacity-90 lg:max-w-[200px] lg:px-4 lg:py-2 lg:text-xs xl:max-w-[220px] xl:text-sm"
               style={{ backgroundColor: config.colors.primary }}
             >
               {buttonText}
