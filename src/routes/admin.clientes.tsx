@@ -73,7 +73,7 @@ function ClientesPage() {
         </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
         <Card
           label="Total de clientes"
           value={String(metrics.totalClientes)}
@@ -92,15 +92,75 @@ function ClientesPage() {
         <Card label="Ticket médio" value={brl(metrics.ticketMedio)} tone="text-blue-600" />
       </div>
 
-      <div className="rounded-[24px] border border-slate-200 bg-white p-5 shadow-[0_18px_40px_rgba(15,23,42,0.06)]">
-        <div className="mb-5 flex items-center justify-between">
+      <div className="rounded-[24px] border border-slate-200 bg-white p-4 shadow-[0_18px_40px_rgba(15,23,42,0.06)] sm:p-5">
+        <div className="mb-5 flex items-center justify-between gap-3">
           <h2 className="text-lg font-semibold text-slate-800">Clientes cadastrados</h2>
-          <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
+          <span className="shrink-0 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600">
             {data.clientes.length} registros
           </span>
         </div>
 
-        <div className="overflow-x-auto">
+        {/* Celular e tablet pequeno: cartões empilhados */}
+        <div className="space-y-3 md:hidden" data-testid="clientes-cards">
+          {data.clientes.map((cliente) => (
+            <div key={cliente.id} className="rounded-2xl border border-slate-200 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="break-words font-semibold text-slate-800">{cliente.nome}</p>
+                  {cliente.email && (
+                    <p className="break-all text-xs text-slate-400">{cliente.email}</p>
+                  )}
+                </div>
+                <span
+                  className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${statusClass(cliente.status)}`}
+                >
+                  {cliente.status}
+                </span>
+              </div>
+              <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
+                <div>
+                  <dt className="text-xs text-slate-400">Setor</dt>
+                  <dd className="text-slate-700">{cliente.setor}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-slate-400">Valor</dt>
+                  <dd className="text-slate-700">{brl(cliente.valor)}</dd>
+                </div>
+                <div>
+                  <dt className="text-xs text-slate-400">Data</dt>
+                  <dd className="text-slate-700">{cliente.data.split("-").reverse().join("/")}</dd>
+                </div>
+              </dl>
+              <div className="mt-4 flex gap-2">
+                <a
+                  href={whatsappLink(
+                    cliente.whatsapp,
+                    `Olá ${cliente.nome}, aqui é da ESL FACILITY!`,
+                  )}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 rounded-lg bg-emerald-50 px-3 py-2 text-center text-sm font-semibold text-emerald-700 hover:bg-emerald-100"
+                >
+                  WhatsApp {cliente.whatsapp}
+                </a>
+                <button
+                  type="button"
+                  onClick={() => removeCliente(cliente.id)}
+                  className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
+                >
+                  Excluir
+                </button>
+              </div>
+            </div>
+          ))}
+          {data.clientes.length === 0 && (
+            <p className="py-8 text-center text-sm text-slate-400">
+              Nenhum cliente cadastrado ainda.
+            </p>
+          )}
+        </div>
+
+        <div className="hidden overflow-x-auto md:block">
           <table className="min-w-full text-left text-sm text-slate-700">
             <thead>
               <tr className="border-b border-slate-200 text-slate-500">
@@ -139,13 +199,7 @@ function ClientesPage() {
                   <td className="py-3 pr-4">{brl(cliente.valor)}</td>
                   <td className="py-3 pr-4">
                     <span
-                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
-                        cliente.status === "Fechado"
-                          ? "bg-emerald-100 text-emerald-700"
-                          : cliente.status === "Em execução"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-amber-100 text-amber-700"
-                      }`}
+                      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${statusClass(cliente.status)}`}
                     >
                       {cliente.status}
                     </span>
@@ -285,10 +339,20 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function Card({ label, value, tone }: { label: string; value: string; tone: string }) {
   return (
-    <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-sm text-slate-500">{label}</p>
-      <p className={`mt-3 text-3xl font-bold text-slate-900`}>{value}</p>
-      <p className={`mt-2 text-sm ${tone}`}>Atualizado em tempo real</p>
+    <div className="min-w-0 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+      <p className="text-xs text-slate-500 sm:text-sm">{label}</p>
+      <p className="mt-2 break-words text-lg font-bold text-slate-900 sm:mt-3 sm:text-3xl">
+        {value}
+      </p>
+      <p className={`mt-1 text-xs sm:mt-2 sm:text-sm ${tone}`}>Atualizado em tempo real</p>
     </div>
   );
+}
+
+function statusClass(status: string) {
+  return status === "Fechado"
+    ? "bg-emerald-100 text-emerald-700"
+    : status === "Em execução"
+      ? "bg-blue-100 text-blue-700"
+      : "bg-amber-100 text-amber-700";
 }

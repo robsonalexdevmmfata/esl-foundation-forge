@@ -155,7 +155,7 @@ function FinanceiroPage() {
         </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
         {[
           { label: "Carteira total", value: brl(m.carteira), hint: `${m.totalProjetos} projetos` },
           {
@@ -172,11 +172,13 @@ function FinanceiroPage() {
         ].map((card) => (
           <div
             key={card.label}
-            className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm"
+            className="min-w-0 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
           >
-            <p className="text-sm text-slate-500">{card.label}</p>
-            <p className="mt-3 text-2xl font-bold text-slate-900">{card.value}</p>
-            <p className="mt-2 text-sm text-emerald-600">{card.hint}</p>
+            <p className="text-xs text-slate-500 sm:text-sm">{card.label}</p>
+            <p className="mt-2 break-words text-lg font-bold text-slate-900 sm:mt-3 sm:text-2xl">
+              {card.value}
+            </p>
+            <p className="mt-1 text-xs text-emerald-600 sm:mt-2 sm:text-sm">{card.hint}</p>
           </div>
         ))}
       </div>
