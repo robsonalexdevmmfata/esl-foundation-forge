@@ -40,6 +40,7 @@ export async function readImageFile(
 
   const original = await readAsDataUrl(file);
   if (file.type === "image/svg+xml" || file.type === "image/gif") return original;
+  if (options.pngOnly) return trimPng(await loadImage(original), maxSize, original);
 
   const img = await loadImage(original);
   const scale = Math.min(1, maxSize / Math.max(img.width, img.height));
@@ -61,4 +62,54 @@ export async function readImageFile(
     return webp.startsWith("data:image/webp") ? webp : canvas.toDataURL("image/png");
   }
   return canvas.toDataURL("image/jpeg", 0.85);
+}
+
+/**
+ * Logos em PNG: remove a área transparente em volta do desenho, para a logo
+ * aparecer grande no site, e reduz para no máximo `maxSize` px.
+ */
+function trimPng(img: HTMLImageElement, maxSize: number, original: string): string {
+  const src = document.createElement("canvas");
+  src.width = img.width;
+  src.height = img.height;
+  const sctx = src.getContext("2d");
+  if (!sctx) return original;
+  sctx.drawImage(img, 0, 0);
+
+  let top = img.height, left = img.width, right = -1, bottom = -1;
+  try {
+    const { data } = sctx.getImageData(0, 0, img.width, img.height);
+    for (let y = 0; y < img.height; y++) {
+      for (let x = 0; x < img.width; x++) {
+        if ((data[(y * img.width + x) * 4 + 3] ?? 0) > 8) {
+          if (x < left) left = x;
+          if (x > right) right = x;
+          if (y < top) top = y;
+          if (y > bottom) bottom = y;
+        }
+      }
+    }
+  } catch {
+    return original;
+  }
+  if (right < 0) return original;
+
+  const pad = Math.round(Math.max(right - left, bottom - top) * 0.02);
+  left = Math.max(0, left - pad);
+  top = Math.max(0, top - pad);
+  right = Math.min(img.width - 1, right + pad);
+  bottom = Math.min(img.height - 1, bottom + pad);
+  const w = right - left + 1;
+  const h = bottom - top + 1;
+  const trimmed = w < img.width || h < img.height;
+  const scale = Math.min(1, maxSize / Math.max(w, h));
+  if (!trimmed && scale === 1 && original.length < 250_000) return original;
+
+  const out = document.createElement("canvas");
+  out.width = Math.max(1, Math.round(w * scale));
+  out.height = Math.max(1, Math.round(h * scale));
+  const octx = out.getContext("2d");
+  if (!octx) return original;
+  octx.drawImage(src, left, top, w, h, 0, 0, out.width, out.height);
+  return out.toDataURL("image/png");
 }
