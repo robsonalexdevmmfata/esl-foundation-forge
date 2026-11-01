@@ -46,7 +46,7 @@ export function Header() {
             <SafeLogo
               src={config.logo.navbar}
               alt="E.S.L & Empreendimentos — serviços corporativos e institucionais"
-              className="h-9 w-auto max-w-[140px] object-contain object-left md:max-w-[130px] lg:h-10 lg:max-w-[150px] xl:h-11 xl:max-w-[180px]"
+              className="h-11 w-auto max-w-[170px] object-contain object-left md:h-10 md:max-w-[150px] lg:h-12 lg:max-w-[190px] xl:h-14 xl:max-w-[220px]"
               width={300}
               height={80}
             />
