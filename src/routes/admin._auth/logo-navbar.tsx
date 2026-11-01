@@ -10,6 +10,15 @@ import {
   type SiteConfig,
 } from "@/lib/site-config";
 import { readImageFile } from "@/lib/image-upload";
+
+/** Logos (menu, rodapé e favicon) só aceitam PNG. */
+const PNG_ONLY: Record<LogoKey, boolean> = {
+  navbar: true,
+  footer: true,
+  favicon: true,
+  hero: false,
+  about: false,
+};
 import { AdminLayout } from "@/components/admin-layout";
 import { SafeLogo } from "@/components/site";
 
@@ -55,6 +64,9 @@ function ImageField({
   return (
     <div>
       <label className="mb-2 block text-sm font-medium text-gray-700">{label}</label>
+      {PNG_ONLY[type] && (
+        <p className="-mt-1 mb-2 text-xs text-gray-500">Somente arquivos PNG (.png).</p>
+      )}
 
       {uploaded ? (
         <div className="grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3 rounded-lg border border-gray-300 bg-gray-50 p-3 sm:flex sm:flex-wrap">
@@ -74,7 +86,7 @@ function ImageField({
               {busy ? "Enviando..." : "Trocar"}
               <input
                 type="file"
-                accept="image/*"
+                accept={PNG_ONLY[type] ? "image/png,.png" : "image/*"}
                 className="hidden"
                 disabled={busy}
                 onChange={(e) => {
@@ -105,7 +117,7 @@ function ImageField({
             {busy ? "Enviando..." : "Upload"}
             <input
               type="file"
-              accept="image/*"
+              accept={PNG_ONLY[type] ? "image/png,.png" : "image/*"}
               className="hidden"
               disabled={busy}
               onChange={(e) => {
@@ -161,7 +173,7 @@ function LogoNavbarEditor() {
     if (!file) return;
     setEnviando(type);
     try {
-      const result = await readImageFile(file, MAX_SIZE[type]);
+      const result = await readImageFile(file, MAX_SIZE[type], { pngOnly: PNG_ONLY[type] });
       handleLogoChange(type, result, file.name);
     } catch (e) {
       setErro(e instanceof Error ? e.message : "Não foi possível ler a imagem.");

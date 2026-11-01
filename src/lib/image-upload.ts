@@ -20,7 +20,20 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-export async function readImageFile(file: File, maxSize = 800): Promise<string> {
+export const PNG_ONLY_MESSAGE = "A logo precisa ser um arquivo PNG (.png). Outros formatos não são aceitos.";
+
+export function isPngFile(file: File): boolean {
+  return file.type === "image/png" && /\.png$/i.test(file.name);
+}
+
+export async function readImageFile(
+  file: File,
+  maxSize = 800,
+  options: { pngOnly?: boolean } = {},
+): Promise<string> {
+  if (options.pngOnly && !isPngFile(file)) {
+    throw new Error(PNG_ONLY_MESSAGE);
+  }
   if (!file.type.startsWith("image/")) {
     throw new Error("Selecione um arquivo de imagem (PNG, JPG, WEBP ou SVG).");
   }
@@ -38,6 +51,9 @@ export async function readImageFile(file: File, maxSize = 800): Promise<string> 
   const ctx = canvas.getContext("2d");
   if (!ctx) return original;
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+  // Logos continuam em PNG mesmo depois de reduzidas.
+  if (options.pngOnly) return canvas.toDataURL("image/png");
 
   const keepTransparency = file.type !== "image/jpeg";
   if (keepTransparency) {
