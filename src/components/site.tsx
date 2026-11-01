@@ -40,70 +40,58 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto max-w-6xl px-4 sm:px-5">
-        <div className="flex items-center justify-between gap-3 py-3">
+        {/* Barra fina em uma linha: logo à esquerda, menu + botão logo após "Contato" */}
+        <div className="flex items-center justify-between gap-3 py-2 lg:gap-6">
           <a href="#inicio" className="flex min-w-0 shrink items-center">
             <SafeLogo
               src={config.logo.navbar}
               alt="E.S.L & Empreendimentos — serviços corporativos e institucionais"
-              className="h-12 w-auto max-w-[170px] object-contain object-left sm:h-14 sm:max-w-[210px] lg:h-16 lg:max-w-[200px] xl:h-20 xl:max-w-[260px]"
+              className="h-9 w-auto max-w-[140px] object-contain object-left md:max-w-[96px] lg:h-10 lg:max-w-[150px] xl:h-11 xl:max-w-[180px]"
               width={300}
               height={80}
             />
           </a>
 
-          <nav className="hidden min-w-0 flex-1 flex-wrap items-center justify-center gap-x-4 gap-y-1 lg:flex xl:gap-x-6">
-            {links.map((l, i) => (
-              <a
-                key={`${l.href}-${i}`}
-                href={l.href}
-                className="whitespace-nowrap font-display text-xs font-semibold tracking-wide transition-colors hover:opacity-80 xl:text-sm"
-                style={{ color: config.colors.primary }}
-              >
-                {l.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="flex shrink-0 items-center gap-2">
+          <div className="hidden min-w-0 items-center gap-3 md:flex lg:gap-5 xl:gap-7">
+            <nav className="flex min-w-0 flex-wrap items-center justify-end gap-x-2.5 gap-y-1 lg:gap-x-5 xl:gap-x-6">
+              {links.map((l, i) => (
+                <a
+                  key={`${l.href}-${i}`}
+                  href={l.href}
+                  className="whitespace-nowrap font-display text-[11px] font-semibold tracking-wide transition-colors hover:opacity-80 lg:text-xs xl:text-sm"
+                  style={{ color: config.colors.primary }}
+                >
+                  {l.label}
+                </a>
+              ))}
+            </nav>
             <a
               href={whatsapp}
               target="_blank"
               rel="noopener noreferrer"
               title={buttonText}
-              className="hidden max-w-[220px] truncate whitespace-nowrap rounded-md px-4 py-2.5 font-display text-sm font-bold text-background shadow-sm transition-colors hover:opacity-90 sm:inline-block"
+              className="max-w-[120px] shrink-0 truncate whitespace-nowrap rounded-md px-3 py-1.5 font-display text-[11px] font-bold text-background shadow-sm transition-colors hover:opacity-90 lg:max-w-[200px] lg:px-4 lg:py-2 lg:text-xs xl:max-w-[220px] xl:text-sm"
               style={{ backgroundColor: config.colors.primary }}
             >
               {buttonText}
             </a>
-            <button
-              type="button"
-              aria-label={open ? "Fechar menu" : "Abrir menu"}
-              aria-expanded={open}
-              aria-controls="mobile-navigation"
-              onClick={() => setOpen((v) => !v)}
-              className="flex h-11 w-11 flex-col items-center justify-center rounded-md border border-border p-2 md:hidden"
-              style={{ color: config.colors.primary }}
-            >
-              <span className="block h-0.5 w-5 bg-current" />
-              <span className="mt-1 block h-0.5 w-5 bg-current" />
-              <span className="mt-1 block h-0.5 w-5 bg-current" />
-            </button>
           </div>
-        </div>
 
-        {/* Tablet: menu completo em uma segunda linha, sem hambúrguer */}
-        <nav className="hidden flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-border py-2.5 md:flex lg:hidden">
-          {links.map((l, i) => (
-            <a
-              key={`${l.href}-${i}`}
-              href={l.href}
-              className="whitespace-nowrap font-display text-xs font-semibold tracking-wide transition-colors hover:opacity-80"
-              style={{ color: config.colors.primary }}
-            >
-              {l.label}
-            </a>
-          ))}
-        </nav>
+          {/* Celular: botão hambúrguer */}
+          <button
+            type="button"
+            aria-label={open ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
+            onClick={() => setOpen((v) => !v)}
+            className="flex h-10 w-10 shrink-0 flex-col items-center justify-center rounded-md border border-border p-2 md:hidden"
+            style={{ color: config.colors.primary }}
+          >
+            <span className="block h-0.5 w-5 bg-current" />
+            <span className="mt-1 block h-0.5 w-5 bg-current" />
+            <span className="mt-1 block h-0.5 w-5 bg-current" />
+          </button>
+        </div>
       </div>
 
       {open && (
