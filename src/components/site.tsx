@@ -41,7 +41,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto max-w-6xl px-4 sm:px-5">
         {/* Barra fina em uma linha: logo à esquerda, menu + botão logo após "Contato" */}
-        <div className="flex items-center justify-between gap-3 py-2 lg:gap-6">
+        <div className="flex items-center justify-between gap-2 py-2 min-[860px]:gap-3 lg:gap-6">
           <a href="#inicio" className="flex min-w-[64px] shrink items-center overflow-hidden">
             <SafeLogo
               src={config.logo.navbar}
@@ -52,8 +52,8 @@ export function Header() {
             />
           </a>
 
-          <div className="hidden min-w-0 shrink items-center justify-end gap-3 md:flex lg:gap-5 xl:gap-7">
-            <nav className="flex shrink-0 items-center justify-end gap-x-2.5 gap-y-1 lg:gap-x-5 xl:gap-x-6">
+          <div className="hidden min-w-0 shrink items-center justify-end gap-2 md:flex min-[860px]:gap-3 lg:gap-5 xl:gap-7">
+            <nav className="flex shrink-0 items-center justify-end gap-x-2 gap-y-1 min-[860px]:gap-x-2.5 lg:gap-x-5 xl:gap-x-6">
               {links.map((l, i) => (
                 <a
                   key={`${l.href}-${i}`}
@@ -70,7 +70,7 @@ export function Header() {
               target="_blank"
               rel="noopener noreferrer"
               title={buttonText}
-              className="min-w-[84px] max-w-[160px] shrink truncate whitespace-nowrap rounded-md px-3 py-1.5 font-display text-[11px] font-bold text-background shadow-sm transition-colors hover:opacity-90 lg:max-w-[200px] lg:px-4 lg:py-2 lg:text-xs xl:max-w-[220px] xl:text-sm"
+              className="min-w-[84px] max-w-[160px] shrink truncate whitespace-nowrap rounded-md px-2.5 py-1.5 min-[860px]:px-3 font-display text-[11px] font-bold text-background shadow-sm transition-colors hover:opacity-90 lg:max-w-[200px] lg:px-4 lg:py-2 lg:text-xs xl:max-w-[220px] xl:text-sm"
               style={{ backgroundColor: config.colors.primary }}
             >
               {buttonText}
