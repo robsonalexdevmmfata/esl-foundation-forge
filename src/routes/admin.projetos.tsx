@@ -94,7 +94,7 @@ function ProjetosPage() {
         </div>
       </div>
 
-      <div className="grid gap-5 md:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-5 md:grid-cols-4">
         <Stat label="Total em carteira" value={brl(metrics.carteira)} />
         <Stat label="Em execução" value={String(metrics.projetosExecucao)} />
         <Stat label="Concluídos" value={String(metrics.projetosConcluidos)} />
@@ -367,9 +367,11 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-[22px] border border-slate-200 bg-white p-5 shadow-sm">
-      <p className="text-sm text-slate-500">{label}</p>
-      <p className="mt-3 text-3xl font-bold text-slate-900">{value}</p>
+    <div className="min-w-0 rounded-[22px] border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+      <p className="text-xs text-slate-500 sm:text-sm">{label}</p>
+      <p className="mt-2 break-words text-lg font-bold text-slate-900 sm:mt-3 sm:text-3xl">
+        {value}
+      </p>
     </div>
   );
 }
